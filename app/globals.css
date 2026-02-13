@@ -85,6 +85,7 @@
   --font-sans: "Geist", "Geist Fallback";
   --font-serif: "Instrument Serif", "Georgia", serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-archivo: var(--font-archivo);
 
   /* Fixed color mappings to use rgb() format for Tailwind v4 */
   --color-background: rgb(var(--background));
