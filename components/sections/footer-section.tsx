@@ -39,8 +39,8 @@ export function FooterSection() {
     <footer className="relative bg-background px-6 py-24 overflow-hidden">
       {/* Giant watermark */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden">
-        <p className="text-[8rem] md:text-[14rem] lg:text-[18rem] font-serif font-bold text-foreground/[0.03] whitespace-nowrap leading-none select-none -mb-12">
-          SUPERTEAM MY
+        <p className="text-[8rem] md:text-[14rem] lg:text-[18rem] font-archivo font-bold text-foreground/[0.03] whitespace-nowrap leading-none select-none -mb-12">
+          SUPERTEAM 🇲🇾
         </p>
       </div>
 

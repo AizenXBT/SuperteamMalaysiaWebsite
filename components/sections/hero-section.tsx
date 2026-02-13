@@ -42,8 +42,8 @@ export function HeroSection() {
           <div className="w-8 h-8 bg-iris rounded-lg flex items-center justify-center">
             <span className="text-primary-foreground font-sans font-bold text-sm">ST</span>
           </div>
-          <span className="font-sans font-semibold text-foreground text-sm tracking-tight">
-            superteam<span className="text-iris"> MY</span>
+          <span className="font-archivo font-bold text-foreground text-base tracking-tight">
+            superteam<span className="text-iris ml-1">🇲🇾</span>
           </span>
         </a>
 
