@@ -13,6 +13,7 @@ const opportunities = [
     description:
       "Bounties are opportunities to showcase your skills and earn. Complete tasks from Solana projects, submit your work, and get paid in crypto.",
     image: "/visual-storytelling-design-article.jpg",
+    href: "https://superteam.fun/earn/regions/malaysia?tab=bounties",
   },
   {
     title: "Hackathons",
@@ -20,6 +21,7 @@ const opportunities = [
     description:
       "Solana hackathons highlight the incredible potential of decentralized technologies. Build cutting-edge innovations across DeFi, DePIN, gaming, and more.",
     image: "/personal-branding-digital-marketing.jpg",
+    href: "https://solana.com/hackathon",
   },
   {
     title: "Grants",
@@ -27,6 +29,7 @@ const opportunities = [
     description:
       "Access Solana Foundation Grants for projects working on decentralization and censorship resistance. From dApps to community initiatives.",
     image: "/typography-trends-modern-fonts.jpg",
+    href: "https://superteam.fun/earn/grants",
   },
   {
     title: "Jobs",
@@ -34,6 +37,7 @@ const opportunities = [
     description:
       "Find full-time and freelance opportunities with Solana ecosystem projects. Roles range from development and design to marketing and community.",
     image: "/modern-ui-design-portfolio-mockup.jpg",
+    href: "https://jobs.solana.com",
   },
 ]
 
