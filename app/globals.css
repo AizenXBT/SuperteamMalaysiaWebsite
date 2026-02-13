@@ -131,6 +131,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
 }
 
 /* Custom cursor styles */

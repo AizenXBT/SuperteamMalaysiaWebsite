@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight } from "lucide-react"
@@ -139,15 +140,13 @@ export function HeroSection() {
           >
             Join the Community
           </a>
-          <a
-            href="https://superteam.fun/earn/regions/malaysia"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/#earn"
             className="bg-secondary text-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-accent/30 transition-colors border border-border/40"
             data-clickable
           >
             Explore Opportunities
-          </a>
+          </Link>
         </motion.div>
 
         {/* Social proof */}

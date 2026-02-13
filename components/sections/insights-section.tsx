@@ -72,7 +72,9 @@ export function InsightsSection() {
           {opportunities.map((item, i) => (
             <motion.a
               key={i}
-              href="#"
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between py-8 relative"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
