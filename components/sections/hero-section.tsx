@@ -129,15 +129,19 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.9 }}
         >
           <a
-            href="#join"
+            href="https://t.me/SuperteamMY"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-iris text-primary-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-iris/90 transition-colors"
             data-clickable
           >
             Join the Community
           </a>
           <a
-            href="/members"
-            className="bg-secondary text-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-accent/30 transition-colors border border-border"
+            href="https://superteam.fun/earn/regions/malaysia"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-secondary text-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-accent/30 transition-colors border border-border/40"
             data-clickable
           >
             Explore Opportunities

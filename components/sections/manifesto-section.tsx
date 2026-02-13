@@ -79,7 +79,7 @@ export function ManifestoSection() {
 
       {/* Manifesto text reveal */}
       <div className="max-w-5xl mx-auto relative">
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-tight text-center text-foreground/10">
+        <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-tight text-center text-foreground/20">
           Support builders.
           <br />
           Grow the ecosystem.

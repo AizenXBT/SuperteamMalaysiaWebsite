@@ -62,7 +62,7 @@ export function FAQSection() {
           </p>
         </motion.div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-border/40">
           {faqs.map((faq, i) => (
             <motion.div
               key={i}

@@ -136,7 +136,7 @@ export function ShowcaseSection() {
         >
           <a
             href="#"
-            className="bg-secondary border-2 border-dashed border-iris/40 text-foreground px-8 py-4 rounded-xl font-medium hover:border-iris hover:bg-iris/5 transition-all flex items-center gap-2"
+            className="bg-secondary border-2 border-dashed border-iris/20 text-foreground px-8 py-4 rounded-xl font-medium hover:border-iris hover:bg-iris/5 transition-all flex items-center gap-2"
             data-clickable
           >
             Discover More Products

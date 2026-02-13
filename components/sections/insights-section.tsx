@@ -64,7 +64,7 @@ export function InsightsSection() {
           </p>
         </motion.div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-border/40">
           {opportunities.map((item, i) => (
             <motion.a
               key={i}
