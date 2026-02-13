@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Instrument_Serif } from "next/font/google"
+import localFont from "next/font/local"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
@@ -12,6 +13,11 @@ const _instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
+})
+
+const archivo = localFont({
+  src: "../public/fonts/Archivo/Archivo-VariableFont_wdth,wght.ttf",
+  variable: "--font-archivo",
 })
 
 export const metadata: Metadata = {
