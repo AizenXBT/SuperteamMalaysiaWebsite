@@ -3,6 +3,7 @@
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -62,17 +63,20 @@ export function HeroSection() {
           ))}
         </div>
 
-        <motion.a
-          href="#join"
-          className="bg-iris text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-iris/90 transition-colors flex items-center gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          data-clickable
-        >
-          Join Community
-          <ArrowRight className="w-4 h-4" />
-        </motion.a>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <motion.a
+            href="#join"
+            className="bg-iris text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-iris/90 transition-colors flex items-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            data-clickable
+          >
+            Join Community
+            <ArrowRight className="w-4 h-4" />
+          </motion.a>
+        </div>
       </motion.nav>
 
       {/* Hero Content */}

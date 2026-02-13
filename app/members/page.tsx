@@ -1,12 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import * as React from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { LenisProvider } from "@/components/lenis-provider"
 import { CustomCursor } from "@/components/custom-cursor"
 import { FooterSection } from "@/components/sections/footer-section"
-import { ArrowLeft, Search, Twitter, ExternalLink, Award, Code, Palette, Megaphone } from "lucide-react"
+import { 
+  ArrowLeft, 
+  Search, 
+  Twitter, 
+  ExternalLink, 
+  Award, 
+  User, 
+  Code,
+  Command as CommandIcon 
+} from "lucide-react"
 import Link from "next/link"
+import { 
+  CommandDialog, 
+  CommandInput, 
+  CommandList, 
+  CommandEmpty, 
+  CommandGroup, 
+  CommandItem 
+} from "@/components/ui/command"
+import { Button } from "@/components/ui/button"
+import { Kbd } from "@/components/ui/kbd"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const skills = [
   "All",
@@ -116,17 +137,17 @@ function MemberCard({ member, index }: { member: typeof members[0], index: numbe
             ))}
           </div>
 
-          <div className="mt-auto flex items-center gap-2 text-muted-foreground text-xs italic">
-            <span>Hover to reveal achievements</span>
+          <div className="mt-auto flex items-center gap-2 text-muted-foreground text-[10px] font-medium uppercase tracking-widest opacity-60">
+            <span>Hover to reveal</span>
           </div>
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 backface-hidden bg-iris rounded-2xl p-8 text-white rotate-y-180 flex flex-col">
+        <div className="absolute inset-0 backface-hidden bg-iris rounded-2xl p-8 text-white rotate-y-180 flex flex-col shadow-2xl shadow-iris/20">
           <h3 className="text-xl font-serif mb-2">{member.name}</h3>
           <p className="text-white/80 text-xs leading-relaxed mb-6">{member.bio}</p>
           
-          <div className="space-y-4 mb-6">
+          <div className="space-y-4 mb-6 text-left">
             <div>
               <p className="text-[10px] uppercase tracking-widest text-white/60 mb-2 font-bold">Achievements</p>
               <div className="space-y-1.5">
@@ -169,11 +190,25 @@ function MemberCard({ member, index }: { member: typeof members[0], index: numbe
 }
 
 export default function MembersPage() {
-  const [search, setSearch] = useState("")
+  const [open, setOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState("All")
+  const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpen((open) => !open)
+      }
+    }
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
 
   const filteredMembers = members.filter((m) => {
-    const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase())
+    const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase()) || 
+                         m.role.toLowerCase().includes(search.toLowerCase()) ||
+                         m.skills.some(s => s.toLowerCase().includes(search.toLowerCase()))
     const matchesFilter = activeFilter === "All" || m.skills.includes(activeFilter)
     return matchesSearch && matchesFilter
   })
@@ -183,11 +218,38 @@ export default function MembersPage() {
       <main className="custom-cursor bg-background min-h-screen">
         <CustomCursor />
         
+        <CommandDialog open={open} onOpenChange={setOpen}>
+          <CommandInput 
+            placeholder="Type a name, role or skill..." 
+            value={search}
+            onValueChange={setSearch}
+          />
+          <CommandList>
+            <CommandEmpty>No members found.</CommandEmpty>
+            <CommandGroup heading="Members">
+              {members.map((member) => (
+                <CommandItem
+                  key={member.name}
+                  onSelect={() => {
+                    setSearch(member.name)
+                    setOpen(false)
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  <span>{member.name}</span>
+                  <span className="text-muted-foreground text-xs ml-auto">{member.role}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </CommandDialog>
+
         {/* Header */}
         <nav className="px-6 py-6 flex items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50">
           <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" data-clickable>
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Back to Home</span>
+            <span className="text-sm font-medium">Back</span>
           </Link>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-iris rounded-lg flex items-center justify-center">
@@ -197,45 +259,56 @@ export default function MembersPage() {
               superteam<span className="text-iris"> MY</span>
             </span>
           </div>
-          <div className="w-24" /> {/* Spacer */}
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <div className="w-4 md:w-12" />
+          </div>
         </nav>
 
         <section className="max-w-6xl mx-auto px-6 py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12"
-          >
-            <h1 className="text-4xl md:text-6xl font-serif text-foreground mb-4">
-              Community <em className="italic text-iris">Directory</em>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl">
-              Meet the builders, designers, and creators shaping the Solana ecosystem in Malaysia.
-            </p>
-          </motion.div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-2xl"
+            >
+              <h1 className="text-4xl md:text-6xl font-serif text-foreground mb-4">
+                Community <em className="italic text-iris">Directory</em>
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Meet the builders, designers, and creators shaping the Solana ecosystem in Malaysia.
+              </p>
+            </motion.div>
 
-          {/* Filters and Search */}
-          <div className="flex flex-col md:flex-row gap-6 mb-12 items-start md:items-center justify-between">
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search members..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-secondary border-border rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-iris/50"
-              />
+            <Button
+              variant="outline"
+              className="relative w-full md:w-64 justify-start text-muted-foreground h-12 px-4 rounded-xl border-border/50 bg-secondary/50 hover:bg-secondary transition-all"
+              onClick={() => setOpen(true)}
+              data-clickable
+            >
+              <Search className="mr-2 h-4 w-4" />
+              <span>Search members...</span>
+              <Kbd className="absolute right-3 top-1/2 -translate-y-1/2">
+                <span className="text-[10px]">⌘</span>K
+              </Kbd>
+            </Button>
+          </div>
+
+          {/* Filters Alignment Fix */}
+          <div className="flex flex-col gap-4 mb-12">
+            <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold uppercase tracking-widest mb-2">
+              <Code className="w-3.5 h-3.5 text-iris" />
+              Filter by Skill
             </div>
-
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <button
                   key={skill}
                   onClick={() => setActiveFilter(skill)}
-                  className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
+                  className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition-all border ${
                     activeFilter === skill
-                      ? "bg-iris text-white"
-                      : "bg-secondary text-muted-foreground hover:bg-iris/10 hover:text-iris"
+                      ? "bg-iris text-white border-iris shadow-lg shadow-iris/20"
+                      : "bg-secondary/50 text-muted-foreground border-border/50 hover:border-iris/30 hover:text-iris"
                   }`}
                   data-clickable
                 >
@@ -246,16 +319,32 @@ export default function MembersPage() {
           </div>
 
           {/* Members Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-            {filteredMembers.map((member, i) => (
-              <MemberCard key={member.name} member={member} index={i} />
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+            <AnimatePresence mode="popLayout">
+              {filteredMembers.map((member, i) => (
+                <MemberCard key={member.name} member={member} index={i} />
+              ))}
+            </AnimatePresence>
           </div>
 
           {filteredMembers.length === 0 && (
-            <div className="text-center py-24">
-              <p className="text-muted-foreground">No members found matching your criteria.</p>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-32 bg-secondary/30 rounded-3xl border border-dashed border-border"
+            >
+              <div className="w-16 h-16 bg-iris/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-8 h-8 text-iris/40" />
+              </div>
+              <p className="text-muted-foreground font-medium">No members found matching &quot;{search}&quot;</p>
+              <Button 
+                variant="link" 
+                onClick={() => {setSearch(""); setActiveFilter("All")}}
+                className="mt-2 text-iris"
+              >
+                Clear all filters
+              </Button>
+            </motion.div>
           )}
         </section>
 
