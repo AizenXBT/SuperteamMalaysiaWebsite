@@ -37,7 +37,7 @@ const faqs = [
   },
 ]
 
-export function PricingSection() {
+export function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (

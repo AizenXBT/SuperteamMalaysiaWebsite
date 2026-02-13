@@ -7,6 +7,8 @@ import { ArrowRight } from "lucide-react"
 const navLinks = [
   { label: "About", href: "#about" },
   { label: "Pillars", href: "#pillars" },
+  { label: "Events", href: "#events" },
+  { label: "Members", href: "/members" },
   { label: "Projects", href: "#projects" },
   { label: "Testimonials", href: "#testimonials" },
   { label: "Earn", href: "#earn" },
@@ -130,7 +132,7 @@ export function HeroSection() {
             Join the Community
           </a>
           <a
-            href="#earn"
+            href="/members"
             className="bg-secondary text-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-accent/30 transition-colors border border-border"
             data-clickable
           >
