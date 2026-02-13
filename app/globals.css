@@ -168,3 +168,14 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+/* react-tweet overrides */
+[data-theme='dark'] .react-tweet-theme {
+  --tweet-bg-color: rgb(var(--secondary)) !important;
+  --tweet-border: 1px solid rgb(var(--border) / 0.4) !important;
+  --tweet-font-family: var(--font-sans) !important;
+}
+
+.react-tweet-theme {
+  margin: 0 !important;
+}
