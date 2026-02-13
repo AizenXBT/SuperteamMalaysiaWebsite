@@ -66,7 +66,9 @@ export function HeroSection() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           <motion.a
-            href="#join"
+            href="https://t.me/SuperteamMY"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-iris text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-iris/90 transition-colors flex items-center gap-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
