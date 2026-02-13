@@ -156,6 +156,10 @@ html.lenis body {
   height: auto;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }

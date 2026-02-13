@@ -6,22 +6,32 @@ import { ArrowRight, ExternalLink } from "lucide-react"
 
 const projects = [
   {
-    name: "SolPay MY",
-    category: "PayFi",
-    description: "A payment gateway enabling Malaysian merchants to accept Solana-based payments seamlessly.",
-    image: "/modern-architecture-building-exterior-minimal.jpg",
+    name: "Chaindex",
+    category: "Analytics",
+    description: "Making trading data on Solana easy, fast & cheap ⚔️ built with possibly the youngest dev 😉",
+    image: "/media/images/project/chaindex.jpg",
+    twitter: "https://x.com/chaindex_xyz",
   },
   {
-    name: "Batik DAO",
-    category: "DAO",
-    description: "A decentralized organization preserving Malaysian batik artistry through tokenized cultural assets.",
-    image: "/fashion-model-editorial-portrait-dramatic-lighting.jpg",
+    name: "Yields",
+    category: "Yield",
+    description: "Invest in bundled yields, simple & powerful 📈",
+    image: "/media/images/project/yielddotso.jpg",
+    twitter: "https://x.com/yieldsdotso",
   },
   {
-    name: "KL DeFi Hub",
-    category: "DeFi",
-    description: "Simplified DeFi access for Southeast Asian users, built on the Solana network.",
-    image: "/interior-design-minimalist-living-room-natural-lig.jpg",
+    name: "MirrorFi",
+    category: "Vaults",
+    description: "Copy top yield strategies with permissionless vaults 🪞",
+    image: "/media/images/project/mirrorfi.jpg",
+    twitter: "https://x.com/mirrorfi_xyz",
+  },
+  {
+    name: "GENPowered",
+    category: "RWA",
+    description: "Turning green energy infra into investable assets ⚡💚",
+    image: "/media/images/project/green-energy.jpg",
+    twitter: "https://x.com/GENPowered",
   },
 ]
 
@@ -35,7 +45,8 @@ export function ShowcaseSection() {
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100])
   const y2 = useTransform(scrollYProgress, [0, 1], [150, -150])
   const y3 = useTransform(scrollYProgress, [0, 1], [80, -80])
-  const yValues = [y1, y2, y3]
+  const y4 = useTransform(scrollYProgress, [0, 1], [120, -120])
+  const yValues = [y1, y2, y3, y4]
 
   return (
     <section id="projects" ref={containerRef} className="bg-background px-6 py-32 overflow-hidden">
@@ -69,7 +80,7 @@ export function ShowcaseSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {projects.map((project, i) => (
             <motion.div
               key={i}
@@ -101,12 +112,24 @@ export function ShowcaseSection() {
                 <div className="flex items-center justify-between">
                   <h3 className="font-serif text-xl text-foreground">{project.name}</h3>
                   <div className="flex items-center gap-2">
-                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" data-clickable>
+                    <a 
+                      href={project.twitter} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-muted-foreground hover:text-foreground transition-colors" 
+                      data-clickable
+                    >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                       </svg>
                     </a>
-                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" data-clickable>
+                    <a 
+                      href={project.twitter} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-muted-foreground hover:text-foreground transition-colors" 
+                      data-clickable
+                    >
                       <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>
@@ -116,7 +139,9 @@ export function ShowcaseSection() {
                 </span>
                 <p className="text-muted-foreground text-sm mt-3 leading-relaxed">{project.description}</p>
                 <a
-                  href="#"
+                  href={project.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-iris text-sm font-medium mt-3 hover:gap-2 transition-all"
                   data-clickable
                 >
@@ -135,7 +160,7 @@ export function ShowcaseSection() {
           viewport={{ once: true }}
         >
           <a
-            href="#"
+            href="/products"
             className="bg-secondary border-2 border-dashed border-iris/20 text-foreground px-8 py-4 rounded-xl font-medium hover:border-iris hover:bg-iris/5 transition-all flex items-center gap-2"
             data-clickable
           >

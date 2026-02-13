@@ -1,16 +1,24 @@
 "use client"
 
-import Link from "next/link"
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Menu } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { 
+  Drawer, 
+  DrawerContent, 
+  DrawerTrigger,
+  DrawerHeader,
+  DrawerTitle 
+} from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
 
 const navLinks = [
   { label: "About", href: "#about" },
   { label: "Pillars", href: "#pillars" },
   { label: "Events", href: "#events" },
   { label: "Members", href: "/members" },
+  { label: "Products", href: "/products" },
   { label: "Projects", href: "#projects" },
   { label: "Testimonials", href: "#testimonials" },
   { label: "Earn", href: "#earn" },
@@ -27,11 +35,34 @@ export function HeroSection() {
   const y = useTransform(scrollYProgress, [0, 1], [0, 100])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
+  const Logo = () => (
+    <a href="/" className="flex items-center gap-2" data-clickable>
+      <span className="font-archivo font-bold text-foreground text-base md:text-lg tracking-tight">
+        superteam<span className="text-iris ml-1">🇲🇾</span>
+      </span>
+    </a>
+  )
+
   return (
     <section
       ref={containerRef}
       className="relative min-h-screen flex flex-col bg-background overflow-hidden"
     >
+      {/* Background Banners */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-10" />
+        <img
+          src="/media/images/banners/hero-light-mode.png"
+          alt=""
+          className="w-full h-full object-cover opacity-40 dark:hidden"
+        />
+        <img
+          src="/media/images/banners/hero-dark-mode.png"
+          alt=""
+          className="w-full h-full object-cover opacity-40 hidden dark:block"
+        />
+      </div>
+
       {/* Navbar */}
       <motion.nav
         className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-background/80 backdrop-blur-md border-b border-border/50"
@@ -39,16 +70,10 @@ export function HeroSection() {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <a href="#" className="flex items-center gap-2" data-clickable>
-          <div className="w-8 h-8 bg-iris rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-sans font-bold text-sm">ST</span>
-          </div>
-          <span className="font-archivo font-bold text-foreground text-base tracking-tight">
-            superteam<span className="text-iris ml-1">🇲🇾</span>
-          </span>
-        </a>
+        <Logo />
 
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop Nav */}
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link, i) => (
             <motion.a
               key={i}
@@ -64,13 +89,15 @@ export function HeroSection() {
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <ThemeToggle />
+          
+          {/* Desktop CTA */}
           <motion.a
             href="https://t.me/SuperteamMY"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-iris text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-iris/90 transition-colors flex items-center gap-2"
+            className="hidden md:flex bg-iris text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-iris/90 transition-colors items-center gap-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
@@ -79,12 +106,52 @@ export function HeroSection() {
             Join Community
             <ArrowRight className="w-4 h-4" />
           </motion.a>
+
+          {/* Mobile Hamburger with Bottom Drawer */}
+          <div className="lg:hidden">
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="ghost" size="icon-sm" className="h-9 w-9">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="bg-background/95 backdrop-blur-xl border-t border-border/50 pb-12">
+                <DrawerHeader className="text-center border-b border-border/10 pb-6">
+                  <DrawerTitle className="flex justify-center">
+                    <Logo />
+                  </DrawerTitle>
+                </DrawerHeader>
+                <div className="flex flex-col gap-1 p-6 max-h-[60vh] overflow-y-auto">
+                  {navLinks.map((link, i) => (
+                    <a
+                      key={i}
+                      href={link.href}
+                      className="text-xl font-serif text-foreground hover:text-iris transition-colors py-3 text-center"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                  <div className="mt-6 pt-6 border-t border-border/50">
+                    <a
+                      href="https://t.me/SuperteamMY"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex bg-iris text-primary-foreground px-6 py-4 rounded-2xl text-lg font-medium hover:bg-iris/90 transition-colors items-center justify-between group"
+                    >
+                      <span>Join Community</span>
+                      <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          </div>
         </div>
       </motion.nav>
 
       {/* Hero Content */}
       <motion.div
-        className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-24"
+        className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-24 relative z-10"
         style={{ y, opacity }}
       >
         {/* Announcement pill */}
@@ -92,7 +159,7 @@ export function HeroSection() {
           href="https://x.com/SuperteamMY"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-secondary border border-border rounded-full px-4 py-2 mb-8 text-sm text-muted-foreground hover:text-foreground hover:border-iris/50 transition-colors"
+          className="inline-flex items-center gap-2 bg-secondary border border-border/40 rounded-full px-4 py-2 mb-8 text-sm text-muted-foreground hover:text-foreground hover:border-iris/50 transition-colors"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
@@ -140,13 +207,13 @@ export function HeroSection() {
           >
             Join the Community
           </a>
-          <Link
-            href="/#earn"
+          <a
+            href="#earn"
             className="bg-secondary text-foreground px-8 py-3.5 rounded-lg font-medium hover:bg-accent/30 transition-colors border border-border/40"
             data-clickable
           >
             Explore Opportunities
-          </Link>
+          </a>
         </motion.div>
 
         {/* Social proof */}
@@ -183,7 +250,7 @@ export function HeroSection() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}

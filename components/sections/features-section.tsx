@@ -1,8 +1,43 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Users, Layers, Calendar, Coins } from "lucide-react"
+
+const backdropImages = [
+  "/media/images/banners/malaysia1.jpg",
+  "/media/images/banners/malaysia2.jpg",
+  "/media/images/banners/malaysia3.jpg",
+]
+
+function BackgroundSlideshow() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % backdropImages.length)
+    }, 5000) // Change image every 5 seconds (including 2s fade)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background z-10" />
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={index}
+          src={backdropImages[index]}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 2 }} // 2s fade
+        />
+      </AnimatePresence>
+    </div>
+  )
+}
 
 function CommunityAnimation() {
   const [active, setActive] = useState(0)
@@ -143,8 +178,10 @@ const pillars = [
 
 export function FeaturesSection() {
   return (
-    <section id="pillars" className="bg-background px-6 py-24">
-      <div className="max-w-6xl mx-auto">
+    <section id="pillars" className="relative bg-background px-6 py-24 overflow-hidden">
+      <BackgroundSlideshow />
+      
+      <div className="relative z-20 max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -166,12 +203,12 @@ export function FeaturesSection() {
             return (
               <motion.div
                 key={i}
-                className="bg-secondary rounded-xl p-8 min-h-[320px] flex flex-col"
+                className="bg-background/40 md:bg-secondary/40 backdrop-blur-md rounded-xl p-8 min-h-[320px] flex flex-col border border-border/20"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 0.98 }}
+                whileHover={{ scale: 0.98, backgroundColor: "rgba(var(--secondary), 0.6)" }}
                 whileTap={{ scale: 0.96 }}
                 data-clickable
               >

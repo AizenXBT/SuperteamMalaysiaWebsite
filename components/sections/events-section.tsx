@@ -1,7 +1,43 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Calendar, MapPin, ArrowRight, ExternalLink } from "lucide-react"
+
+const backdropImages = [
+  "/media/images/banners/community1.jpg",
+  "/media/images/banners/community2.jpg",
+  "/media/images/banners/community3.jpg",
+]
+
+function BackgroundSlideshow() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % backdropImages.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/90 to-secondary z-10 dark:from-secondary/40 dark:via-secondary/70 dark:to-secondary" />
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={index}
+          src={backdropImages[index]}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 2 }}
+        />
+      </AnimatePresence>
+    </div>
+  )
+}
 
 const events = [
   {
@@ -10,7 +46,7 @@ const events = [
     time: "8:00 PM - 10:00 PM",
     location: "Kuala Lumpur / Virtual",
     lumaUrl: "https://lu.ma/stmy-eco-call",
-    image: "/modern-architecture-building-exterior-minimal.jpg",
+    image: "/media/images/banners/community1.jpg",
     status: "Upcoming",
   },
   {
@@ -19,7 +55,7 @@ const events = [
     time: "6:30 PM - 9:00 PM",
     location: "TBD, Kuala Lumpur",
     lumaUrl: "https://lu.ma/stmy-builders-meetup",
-    image: "/interior-design-minimalist-living-room-natural-lig.jpg",
+    image: "/media/images/banners/community2.jpg",
     status: "Upcoming",
   },
   {
@@ -28,15 +64,17 @@ const events = [
     time: "Full Day",
     location: "Global / Online",
     lumaUrl: "https://lu.ma/speedrun-hack",
-    image: "/visual-storytelling-design-article.jpg",
+    image: "/media/images/banners/community3.jpg",
     status: "Past",
   },
 ]
 
 export function EventsSection() {
   return (
-    <section id="events" className="bg-secondary px-6 py-24">
-      <div className="max-w-6xl mx-auto">
+    <section id="events" className="relative bg-secondary px-6 py-24 overflow-hidden">
+      <BackgroundSlideshow />
+      
+      <div className="relative z-20 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
           <div>
             <motion.p
@@ -66,7 +104,7 @@ export function EventsSection() {
           {events.map((event, i) => (
             <motion.div
               key={i}
-              className="bg-background rounded-2xl overflow-hidden border border-border/50 group hover:border-iris/30 transition-all flex flex-col"
+              className="bg-background/60 backdrop-blur-md rounded-2xl overflow-hidden border border-border/20 group hover:border-iris/30 transition-all flex flex-col"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -115,7 +153,7 @@ export function EventsSection() {
                 <a
                   href={event.lumaUrl}
                   target="_blank"
-                  className="mt-6 inline-flex items-center justify-center gap-2 bg-secondary text-foreground w-full py-3 rounded-xl text-sm font-medium hover:bg-iris hover:text-white transition-all"
+                  className="mt-6 inline-flex items-center justify-center gap-2 bg-secondary/50 text-foreground w-full py-3 rounded-xl text-sm font-medium hover:bg-iris hover:text-white transition-all"
                 >
                   Register Now <ArrowRight className="w-4 h-4" />
                 </a>
