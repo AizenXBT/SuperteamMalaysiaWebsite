@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { LenisProvider } from "@/components/lenis-provider"
 import { CustomCursor } from "@/components/custom-cursor"
 import { FooterSection } from "@/components/sections/footer-section"
-import { ArrowLeft, Search, Filter } from "lucide-react"
+import { ArrowLeft, Search, Twitter, ExternalLink, Award, Code, Palette, Megaphone } from "lucide-react"
 import Link from "next/link"
 
 const skills = [
@@ -28,6 +28,8 @@ const members = [
     twitter: "@david_stmy",
     photo: "DV",
     achievements: ["Hackathon Winner", "Solana Builder"],
+    bio: "Building the next generation of Web3 talent in Malaysia.",
+    projects: ["STMY Website", "Solana Hub"]
   },
   {
     name: "Arif",
@@ -35,7 +37,9 @@ const members = [
     skills: ["Rust", "Frontend"],
     twitter: "@arif_sol",
     photo: "AR",
-    achievements: ["Grant Recipient"],
+    achievements: ["Grant Recipient", "Core Contributor"],
+    bio: "Rust enthusiast and frontend wizard. Building on Solana since 2021.",
+    projects: ["SolPay MY", "Batik DAO"]
   },
   {
     name: "Sarah",
@@ -43,7 +47,9 @@ const members = [
     skills: ["Design"],
     twitter: "@sarah_designs",
     photo: "SM",
-    achievements: ["Core Contributor"],
+    achievements: ["Core Contributor", "Design Lead"],
+    bio: "Creating beautiful and intuitive Web3 experiences.",
+    projects: ["STMY Brand Kit"]
   },
   {
     name: "Khalid",
@@ -51,9 +57,116 @@ const members = [
     skills: ["Community", "Content"],
     twitter: "@khalid_stmy",
     photo: "KL",
-    achievements: ["DAO Contributor"],
+    achievements: ["DAO Contributor", "Events Lead"],
+    bio: "Connecting builders and growing the ecosystem one event at a time.",
+    projects: ["KL DeFi Hub"]
   },
+  {
+    name: "Mei",
+    role: "Writer",
+    skills: ["Content"],
+    twitter: "@mei_content",
+    photo: "MC",
+    achievements: ["Bounty Winner"],
+    bio: "Simplifying complex Web3 concepts through storytelling.",
+    projects: ["STMY Newsletter"]
+  },
+  {
+    name: "Raj",
+    role: "Growth",
+    skills: ["Growth", "Product"],
+    twitter: "@raj_growth",
+    photo: "RP",
+    achievements: ["Hackathon Winner"],
+    bio: "Scaling products and communities in the Solana ecosystem.",
+    projects: ["Earn Portal"]
+  }
 ]
+
+function MemberCard({ member, index }: { member: typeof members[0], index: number }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative h-[400px] perspective-1000 group"
+      data-clickable
+    >
+      <motion.div
+        className="w-full h-full transition-all duration-500 preserve-3d"
+        animate={{ rotateY: isHovered ? 180 : 0 }}
+      >
+        {/* Front Side */}
+        <div className="absolute inset-0 backface-hidden bg-secondary rounded-2xl p-8 border border-border/50 flex flex-col items-center text-center justify-center">
+          <div className="w-24 h-24 rounded-full bg-iris/10 flex items-center justify-center text-3xl font-serif text-iris mb-6 group-hover:scale-110 transition-transform duration-500">
+            {member.photo}
+          </div>
+          <h3 className="text-2xl font-serif text-foreground mb-1">{member.name}</h3>
+          <p className="text-iris text-sm font-medium uppercase tracking-wider mb-4">{member.role}</p>
+          
+          <div className="flex flex-wrap justify-center gap-1.5 mb-6">
+            {member.skills.slice(0, 3).map(s => (
+              <span key={s} className="px-2.5 py-1 bg-background/50 rounded-full text-[10px] text-muted-foreground border border-border/50">
+                {s}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-auto flex items-center gap-2 text-muted-foreground text-xs italic">
+            <span>Hover to reveal achievements</span>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div className="absolute inset-0 backface-hidden bg-iris rounded-2xl p-8 text-white rotate-y-180 flex flex-col">
+          <h3 className="text-xl font-serif mb-2">{member.name}</h3>
+          <p className="text-white/80 text-xs leading-relaxed mb-6">{member.bio}</p>
+          
+          <div className="space-y-4 mb-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-white/60 mb-2 font-bold">Achievements</p>
+              <div className="space-y-1.5">
+                {member.achievements.map(a => (
+                  <div key={a} className="flex items-center gap-2">
+                    <Award className="w-3.5 h-3.5 text-lime" />
+                    <span className="text-xs font-medium">{a}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-white/60 mb-2 font-bold">Projects</p>
+              <div className="flex flex-wrap gap-1.5">
+                {member.projects.map(p => (
+                  <span key={p} className="text-[10px] bg-white/10 px-2 py-0.5 rounded border border-white/20">
+                    {p}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-auto flex items-center justify-between">
+            <a 
+              href={`https://x.com/${member.twitter}`} 
+              target="_blank" 
+              className="text-white hover:text-lime transition-colors inline-flex items-center gap-1.5 text-xs font-medium"
+            >
+              <Twitter className="w-3.5 h-3.5" />
+              {member.twitter}
+            </a>
+            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
 
 export default function MembersPage() {
   const [search, setSearch] = useState("")
@@ -133,50 +246,9 @@ export default function MembersPage() {
           </div>
 
           {/* Members Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
             {filteredMembers.map((member, i) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-secondary rounded-2xl p-6 border border-border/50 hover:border-iris/30 transition-all group"
-                data-clickable
-              >
-                <div className="w-16 h-16 rounded-full bg-iris/10 flex items-center justify-center text-xl font-serif text-iris mb-4 group-hover:scale-110 transition-transform">
-                  {member.photo}
-                </div>
-                <h3 className="text-xl font-serif text-foreground">{member.name}</h3>
-                <p className="text-iris text-xs font-medium uppercase tracking-wider mb-3">{member.role}</p>
-                
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {member.skills.map(s => (
-                    <span key={s} className="px-2 py-0.5 bg-background/50 rounded text-[10px] text-muted-foreground border border-border/50">
-                      {s}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  {member.achievements.map(a => (
-                    <div key={a} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-lime" />
-                      <span className="text-[11px] text-foreground/80 font-medium">{a}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <a 
-                  href={`https://x.com/${member.twitter}`} 
-                  target="_blank" 
-                  className="text-muted-foreground hover:text-iris transition-colors inline-flex items-center gap-1.5 text-xs"
-                >
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                  {member.twitter}
-                </a>
-              </motion.div>
+              <MemberCard key={member.name} member={member} index={i} />
             ))}
           </div>
 
@@ -189,6 +261,21 @@ export default function MembersPage() {
 
         <FooterSection />
       </main>
+
+      <style jsx global>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
     </LenisProvider>
   )
 }
