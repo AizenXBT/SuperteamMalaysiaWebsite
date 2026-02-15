@@ -576,6 +576,9 @@ function AddProjectDialog({ onAdd }: { onAdd: () => void }) {
         <div className="p-8 pb-4"><DialogHeader><DialogTitle className="text-3xl font-serif">New Project</DialogTitle></DialogHeader></div>
         <div className="flex-1 overflow-y-auto px-8 py-2 custom-scrollbar">
           <form id="project-form" onSubmit={handleSubmit} className="space-y-6 pb-8">
+            <FormGroup label="Project Thumbnail" icon={<ImageIcon className="w-4 h-4" />}>
+              <ImageUpload value={formData.image_url} onChange={url => setFormData({...formData, image_url: url})} label="Upload Project Cover" />
+            </FormGroup>
             <FormGroup label="Project Name" icon={<Layers className="w-4 h-4" />}><Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required className="bg-secondary/30 h-11 rounded-xl" /></FormGroup>
             <FormGroup label="Category" icon={<TagIcon className="w-4 h-4" />}><Input placeholder="e.g. DeFi, RWA" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required className="bg-secondary/30 h-11 rounded-xl" /></FormGroup>
             <FormGroup label="Description" icon={<Type className="w-4 h-4" />}><Input value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="bg-secondary/30 h-11 rounded-xl" /></FormGroup>
