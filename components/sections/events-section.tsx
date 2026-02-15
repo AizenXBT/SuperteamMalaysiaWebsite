@@ -39,37 +39,23 @@ function BackgroundSlideshow() {
   )
 }
 
-const events = [
+const fallbackEvents = [
   {
+    id: "1",
     title: "Solana Ecosystem Call: Malaysia Edition",
-    date: "Feb 28, 2026",
-    time: "8:00 PM - 10:00 PM",
+    date: "2026-02-28",
+    time_range: "8:00 PM - 10:00 PM",
     location: "Kuala Lumpur / Virtual",
-    lumaUrl: "https://lu.ma/stmy-eco-call",
-    image: "/media/images/banners/community1.jpg",
+    luma_url: "https://lu.ma/stmy-eco-call",
+    image_url: "/media/images/banners/community1.jpg",
     status: "Upcoming",
-  },
-  {
-    title: "Web3 Builders Meetup",
-    date: "March 15, 2026",
-    time: "6:30 PM - 9:00 PM",
-    location: "TBD, Kuala Lumpur",
-    lumaUrl: "https://lu.ma/stmy-builders-meetup",
-    image: "/media/images/banners/community2.jpg",
-    status: "Upcoming",
-  },
-  {
-    title: "Solana Speedrun Hackathon",
-    date: "Jan 15, 2026",
-    time: "Full Day",
-    location: "Global / Online",
-    lumaUrl: "https://lu.ma/speedrun-hack",
-    image: "/media/images/banners/community3.jpg",
-    status: "Past",
-  },
+  }
 ]
 
-export function EventsSection() {
+export function EventsSection({ initialData }: { initialData?: any[] }) {
+  // Use server-fetched data if available, otherwise use fallbacks
+  const events = initialData && initialData.length > 0 ? initialData : fallbackEvents
+
   return (
     <section id="events" className="relative bg-secondary px-6 py-24 overflow-hidden">
       <BackgroundSlideshow />
@@ -103,7 +89,7 @@ export function EventsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {events.map((event, i) => (
             <motion.div
-              key={i}
+              key={event.id || i}
               className="bg-background/60 backdrop-blur-md rounded-2xl overflow-hidden border border-border/20 group hover:border-iris/30 transition-all flex flex-col"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -113,7 +99,7 @@ export function EventsSection() {
             >
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={event.image}
+                  src={event.image_url || "/media/images/banners/community1.jpg"}
                   alt={event.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -131,9 +117,9 @@ export function EventsSection() {
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex items-center gap-2 text-iris text-xs font-semibold mb-3">
                   <Calendar className="w-3.5 h-3.5" />
-                  {event.date}
+                  {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </div>
-                <h3 className="text-xl font-serif text-foreground mb-4 group-hover:text-iris transition-colors">
+                <h3 className="text-xl font-serif text-foreground mb-4 group-hover:text-iris transition-colors line-clamp-2">
                   {event.title}
                 </h3>
                 
@@ -142,16 +128,18 @@ export function EventsSection() {
                     <MapPin className="w-4 h-4" />
                     {event.location}
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    {event.time}
-                  </div>
+                  {event.time_range && (
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      {event.time_range}
+                    </div>
+                  )}
                 </div>
 
                 <a
-                  href={event.lumaUrl}
+                  href={event.luma_url || "https://lu.ma/SuperteamMY"}
                   target="_blank"
                   className="mt-6 inline-flex items-center justify-center gap-2 bg-secondary/50 text-foreground w-full py-3 rounded-xl text-sm font-medium hover:bg-iris hover:text-white transition-all"
                 >

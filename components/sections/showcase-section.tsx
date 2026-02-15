@@ -4,43 +4,26 @@ import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ExternalLink } from "lucide-react"
 
-const projects = [
+const fallbackProjects = [
   {
+    id: "1",
     name: "Chaindex",
     category: "Analytics",
     description: "Making trading data on Solana easy, fast & cheap ⚔️ built with possibly the youngest dev 😉",
-    image: "/media/images/project/chaindex.jpg",
-    twitter: "https://x.com/chaindex_xyz",
-  },
-  {
-    name: "Yields",
-    category: "Yield",
-    description: "Invest in bundled yields, simple & powerful 📈",
-    image: "/media/images/project/yielddotso.jpg",
-    twitter: "https://x.com/yieldsdotso",
-  },
-  {
-    name: "MirrorFi",
-    category: "Vaults",
-    description: "Copy top yield strategies with permissionless vaults 🪞",
-    image: "/media/images/project/mirrorfi.jpg",
-    twitter: "https://x.com/mirrorfi_xyz",
-  },
-  {
-    name: "GENPowered",
-    category: "RWA",
-    description: "Turning green energy infra into investable assets ⚡💚",
-    image: "/media/images/project/green-energy.jpg",
-    twitter: "https://x.com/GENPowered",
-  },
+    image_url: "/media/images/project/chaindex.jpg",
+    twitter_url: "https://x.com/chaindex_xyz",
+  }
 ]
 
-export function ShowcaseSection() {
+export function ShowcaseSection({ initialData }: { initialData?: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
+
+  // Use server data if available
+  const projects = initialData && initialData.length > 0 ? initialData : fallbackProjects
 
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100])
   const y2 = useTransform(scrollYProgress, [0, 1], [150, -150])
@@ -83,9 +66,9 @@ export function ShowcaseSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {projects.map((project, i) => (
             <motion.div
-              key={i}
+              key={project.id || i}
               className="relative group"
-              style={{ y: yValues[i] }}
+              style={{ y: yValues[i] || 0 }}
               initial={{ clipPath: "inset(100% 0 0 0)" }}
               whileInView={{ clipPath: "inset(0 0 0 0)" }}
               viewport={{ once: true }}
@@ -97,9 +80,9 @@ export function ShowcaseSection() {
               data-clickable
             >
               {/* Image */}
-              <div className="relative h-[280px] rounded-xl overflow-hidden">
+              <div className="relative h-[280px] rounded-xl overflow-hidden shadow-2xl shadow-black/20">
                 <motion.img
-                  src={project.image}
+                  src={project.image_url || "/media/images/project/chaindex.jpg"}
                   alt={project.name}
                   className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
@@ -113,7 +96,7 @@ export function ShowcaseSection() {
                   <h3 className="font-serif text-xl text-foreground">{project.name}</h3>
                   <div className="flex items-center gap-2">
                     <a 
-                      href={project.twitter} 
+                      href={project.twitter_url || "#"} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-muted-foreground hover:text-foreground transition-colors" 
@@ -124,7 +107,7 @@ export function ShowcaseSection() {
                       </svg>
                     </a>
                     <a 
-                      href={project.twitter} 
+                      href={project.website_url || project.twitter_url || "#"} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-muted-foreground hover:text-foreground transition-colors" 
@@ -134,12 +117,12 @@ export function ShowcaseSection() {
                     </a>
                   </div>
                 </div>
-                <span className="inline-block bg-iris/10 text-iris text-xs font-medium px-2 py-1 rounded-md mt-2">
+                <span className="inline-block bg-iris/10 text-iris text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md mt-2">
                   {project.category}
                 </span>
-                <p className="text-muted-foreground text-sm mt-3 leading-relaxed">{project.description}</p>
+                <p className="text-muted-foreground text-sm mt-3 leading-relaxed line-clamp-2">{project.description}</p>
                 <a
-                  href={project.twitter}
+                  href={project.twitter_url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-iris text-sm font-medium mt-3 hover:gap-2 transition-all"
