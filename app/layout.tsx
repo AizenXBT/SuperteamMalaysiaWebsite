@@ -13,6 +13,7 @@ const _instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
 })
 
 const archivo = localFont({
@@ -38,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${archivo.variable} font-sans antialiased`}>
+      <body className={`${archivo.variable} ${_instrumentSerif.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

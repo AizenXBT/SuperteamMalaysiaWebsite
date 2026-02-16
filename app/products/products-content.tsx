@@ -37,6 +37,7 @@ import {
   DrawerTitle 
 } from "@/components/ui/drawer"
 import { supabase } from "@/lib/supabase"
+import { cn } from "@/lib/utils"
 
 const navLinks = [
   { label: "About", href: "/#about" },
@@ -125,26 +126,30 @@ function ProductCard({ product, index }: { product: any, index: number }) {
             {product.name}
           </h3>
           <div className="flex items-center gap-2">
-            {product.twitter_url && (
-              <a 
-                href={formatUrl(product.twitter_url)} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-            )}
-            {product.website_url && (
-              <a 
-                href={formatUrl(product.website_url)} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
+            <a 
+              href={product.twitter_url ? formatUrl(product.twitter_url) : "#"} 
+              target={product.twitter_url ? "_blank" : undefined}
+              rel={product.twitter_url ? "noopener noreferrer" : undefined} 
+              className={cn(
+                "transition-colors",
+                product.twitter_url ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground/20 cursor-not-allowed"
+              )}
+              onClick={product.twitter_url ? undefined : (e) => e.preventDefault()}
+            >
+              <Twitter className="w-4 h-4" />
+            </a>
+            <a 
+              href={product.website_url ? formatUrl(product.website_url) : "#"} 
+              target={product.website_url ? "_blank" : undefined}
+              rel={product.website_url ? "noopener noreferrer" : undefined} 
+              className={cn(
+                "transition-colors",
+                product.website_url ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground/20 cursor-not-allowed"
+              )}
+              onClick={product.website_url ? undefined : (e) => e.preventDefault()}
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </div>
         

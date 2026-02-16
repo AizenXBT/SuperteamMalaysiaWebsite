@@ -87,6 +87,58 @@ function AdminLoader() {
   )
 }
 
+function SiteSettings() {
+  const [lumaUrl, setLumaUrl] = useState("")
+  const [isSaving, setIsSaving] = useState(false)
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const { data } = await supabase.from('site_content').select('content').eq('key', 'luma_settings').single()
+      if (data) setLumaUrl(data.content.calendar_url || "")
+    }
+    fetchSettings()
+  }, [])
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    const { error } = await supabase.from('site_content').upsert({ 
+      key: 'luma_settings', 
+      content: { calendar_url: lumaUrl },
+      updated_at: new Date().toISOString()
+    })
+    
+    if (!error) toast.success("Settings updated!")
+    else toast.error("Failed to update settings")
+    
+    setIsSaving(false)
+  }
+
+  return (
+    <Card className="bg-secondary/20 border-border/40">
+      <CardHeader>
+        <CardTitle className="font-serif">Events Configuration</CardTitle>
+        <CardDescription>Configure external integrations like Luma.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <FormGroup label="Luma Calendar URL" icon={<LinkIcon className="w-4 h-4" />}>
+          <Input 
+            placeholder="https://lu.ma/embed/calendar/..." 
+            value={lumaUrl} 
+            onChange={(e) => setLumaUrl(e.target.value)} 
+            className="bg-background/50 border-border/40 h-11 rounded-xl"
+          />
+          <p className="text-xs text-muted-foreground mt-2">
+            Paste your Luma Calendar Embed URL here to enable the "Live Feed" view on the Events section.
+          </p>
+        </FormGroup>
+        <Button onClick={handleSave} disabled={isSaving} className="bg-iris hover:bg-iris/90 rounded-xl">
+          {isSaving ? "Saving..." : "Save Settings"}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
 function FormGroup({ label, icon, children }: { label: string, icon: React.ReactNode, children: React.ReactNode }) {
   return (
     <div className="space-y-2">
@@ -134,19 +186,29 @@ function TagInput({ tags, setTags, placeholder = "Add item..." }: { tags: string
           ))}
         </AnimatePresence>
       </div>
-      <div className="relative group">
-        <Input
-          placeholder={placeholder}
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === ' ' || e.key === 'Enter') {
-              e.preventDefault()
-              addTag()
-            }
-          }}
-          className="bg-secondary/30 border-border/40 h-11 rounded-xl focus:ring-iris/20"
-        />
+      <div className="relative flex gap-2">
+        <div className="relative flex-1">
+          <Input
+            placeholder={placeholder}
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                addTag()
+              }
+            }}
+            className="bg-secondary/30 border-border/40 h-11 rounded-xl focus:ring-iris/20"
+          />
+        </div>
+        <Button 
+          type="button" 
+          onClick={addTag}
+          variant="secondary"
+          className="h-11 w-11 rounded-xl bg-iris/10 border border-iris/20 text-iris hover:bg-iris hover:text-white transition-all"
+        >
+          <Plus className="w-5 h-5" />
+        </Button>
       </div>
     </div>
   )
@@ -443,6 +505,7 @@ export default function AdminDashboard() {
 
                 <TabsContent value="events" className="mt-0 space-y-8">
                   <SectionHeader title="Events" desc="Manage community happenings." action={<AddEventDialog onAdd={fetchEvents} />} />
+                  <SiteSettings />
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {events.map(e => <AdminCard key={e.id} title={e.title} subtitle={`${e.date} • ${e.status}`} icon={<Calendar className="w-5 h-5" />} onDelete={() => handleDelete('events', e.id, fetchEvents)} />)}
                   </div>

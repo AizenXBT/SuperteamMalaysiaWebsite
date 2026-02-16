@@ -3,6 +3,7 @@
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ExternalLink } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 const fallbackProjects = [
   {
@@ -14,6 +15,12 @@ const fallbackProjects = [
     twitter_url: "https://x.com/chaindex_xyz",
   }
 ]
+
+const formatUrl = (url: string) => {
+  if (!url) return "#"
+  if (url.startsWith("http") || url.startsWith("mailto:") || url.startsWith("tel:")) return url
+  return `https://${url}`
+}
 
 export function ShowcaseSection({ initialData }: { initialData?: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -96,22 +103,30 @@ export function ShowcaseSection({ initialData }: { initialData?: any[] }) {
                   <h3 className="font-serif text-xl text-foreground">{project.name}</h3>
                   <div className="flex items-center gap-2">
                     <a 
-                      href={project.twitter_url || "#"} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-muted-foreground hover:text-foreground transition-colors" 
-                      data-clickable
+                      href={project.twitter_url ? formatUrl(project.twitter_url) : "#"} 
+                      target={project.twitter_url ? "_blank" : undefined}
+                      rel={project.twitter_url ? "noopener noreferrer" : undefined} 
+                      className={cn(
+                        "transition-colors",
+                        project.twitter_url ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground/20 cursor-not-allowed"
+                      )}
+                      data-clickable={project.twitter_url ? true : undefined}
+                      onClick={project.twitter_url ? undefined : (e) => e.preventDefault()}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                       </svg>
                     </a>
                     <a 
-                      href={project.website_url || project.twitter_url || "#"} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-muted-foreground hover:text-foreground transition-colors" 
-                      data-clickable
+                      href={project.website_url ? formatUrl(project.website_url) : "#"} 
+                      target={project.website_url ? "_blank" : undefined}
+                      rel={project.website_url ? "noopener noreferrer" : undefined} 
+                      className={cn(
+                        "transition-colors",
+                        project.website_url ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground/20 cursor-not-allowed"
+                      )}
+                      data-clickable={project.website_url ? true : undefined}
+                      onClick={project.website_url ? undefined : (e) => e.preventDefault()}
                     >
                       <ExternalLink className="w-4 h-4" />
                     </a>
@@ -122,11 +137,17 @@ export function ShowcaseSection({ initialData }: { initialData?: any[] }) {
                 </span>
                 <p className="text-muted-foreground text-sm mt-3 leading-relaxed line-clamp-2">{project.description}</p>
                 <a
-                  href={project.twitter_url || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-iris text-sm font-medium mt-3 hover:gap-2 transition-all"
-                  data-clickable
+                  href={project.website_url || project.twitter_url ? formatUrl(project.website_url || project.twitter_url) : "#"}
+                  target={project.website_url || project.twitter_url ? "_blank" : undefined}
+                  rel={project.website_url || project.twitter_url ? "noopener noreferrer" : undefined}
+                  className={cn(
+                    "inline-flex items-center gap-1 text-sm font-medium mt-3 transition-all",
+                    (project.website_url || project.twitter_url) 
+                      ? "text-iris hover:gap-2" 
+                      : "text-iris/20 cursor-not-allowed"
+                  )}
+                  data-clickable={project.website_url || project.twitter_url ? true : undefined}
+                  onClick={project.website_url || project.twitter_url ? undefined : (e) => e.preventDefault()}
                 >
                   Read More <ArrowRight className="w-3 h-3" />
                 </a>
