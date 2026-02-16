@@ -5,10 +5,10 @@ import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 
 const footerLinks = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Earn", href: "#earn" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Members", href: "/members" },
+  { label: "Products", href: "/products" },
+  { label: "Earn", href: "https://superteam.fun/earn" },
+  { label: "FAQ", href: "/#faq" },
 ]
 
 const socialLinks = [

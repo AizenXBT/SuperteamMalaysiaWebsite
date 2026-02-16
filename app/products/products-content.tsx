@@ -91,6 +91,12 @@ const initialProducts = [
   }
 ]
 
+const formatUrl = (url: string) => {
+  if (!url) return "#"
+  if (url.startsWith("http://") || url.startsWith("https://")) return url
+  return `https://${url}`
+}
+
 function ProductCard({ product, index }: { product: any, index: number }) {
   return (
     <motion.div
@@ -119,22 +125,26 @@ function ProductCard({ product, index }: { product: any, index: number }) {
             {product.name}
           </h3>
           <div className="flex items-center gap-2">
-            <a 
-              href={product.twitter_url || "#"} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a 
-              href={product.website_url || product.twitter_url || "#"} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-            </a>
+            {product.twitter_url && (
+              <a 
+                href={formatUrl(product.twitter_url)} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+              </a>
+            )}
+            {product.website_url && (
+              <a 
+                href={formatUrl(product.website_url)} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
           </div>
         </div>
         
@@ -187,7 +197,7 @@ export function ProductsContent({ initialData }: { initialData: any[] }) {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || 
                          p.description?.toLowerCase().includes(search.toLowerCase()) ||
                          p.tags?.some((t: string) => t.toLowerCase().includes(search.toLowerCase()))
-    const matchesCategory = activeCategory === "All" || p.category === activeCategory
+    const matchesCategory = activeCategory === "All" || p.category.toLowerCase() === activeCategory.toLowerCase()
     return matchesSearch && matchesCategory
   })
 

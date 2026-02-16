@@ -26,21 +26,8 @@ export const metadata: Metadata = {
     "Superteam Malaysia is a community of the best talent learning, earning, and building in the Solana ecosystem. Join us to connect, build, and grow Web3 in Malaysia.",
   generator: "v0.app",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/media/images/stmy-logo.jpg",
+    apple: "/media/images/stmy-logo.jpg",
   },
 }
 

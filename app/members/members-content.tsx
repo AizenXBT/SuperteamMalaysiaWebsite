@@ -10,7 +10,6 @@ import {
   ArrowLeft, 
   Search, 
   Twitter, 
-  ExternalLink, 
   Award, 
   User, 
   Code,
@@ -180,7 +179,6 @@ function MemberCard({ member, index }: { member: any, index: number }) {
               <Twitter className="w-3.5 h-3.5" />
               {member.twitter}
             </a>
-            <ExternalLink className="w-3.5 h-3.5 text-white/40" />
           </div>
         </div>
       </motion.div>
@@ -219,7 +217,10 @@ export function MembersContent({ initialData }: { initialData: any[] }) {
     const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase()) || 
                          m.role.toLowerCase().includes(search.toLowerCase()) ||
                          m.skills?.some((s: string) => s.toLowerCase().includes(search.toLowerCase()))
-    const matchesFilter = activeFilter === "All" || m.skills?.includes(activeFilter)
+    
+    const matchesFilter = activeFilter === "All" || 
+                         m.skills?.some((s: string) => s.toLowerCase() === activeFilter.toLowerCase())
+    
     return matchesSearch && matchesFilter
   })
 

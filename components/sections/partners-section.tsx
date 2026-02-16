@@ -8,7 +8,7 @@ const initialPartners = [
   { name: "Helius", initials: "HL", logo_url: "https://www.helius.dev/favicon.ico" },
   { name: "Phantom", initials: "PH", logo_url: "https://phantom.app/favicon.ico" },
   { name: "Jupiter", initials: "JU", logo_url: "https://jup.ag/favicon.ico" },
-  { name: "Magic Eden", initials: "ME", logo_url: "https://magiceden.io/favicon.ico" },
+  { name: "Magic Eden", initials: "ME", logo_url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimagedelivery.net%2FE-VnZk4fwouzlzwX_qz4fg%2F532afb9b-8805-424d-8f85-da5c3e0f8600%2Fpublic&f=1&nofb=1&ipt=e534bd240cc6e32c2b7ba30c8b57209a928e193f32258241e933af2bca95a4eb" },
   { name: "Marinade", initials: "MR", logo_url: "https://marinade.finance/favicon.ico" },
   { name: "Raydium", initials: "RY", logo_url: "https://raydium.io/favicon.ico" },
 ]
