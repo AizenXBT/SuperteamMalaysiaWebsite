@@ -4,6 +4,7 @@ import { HeroSection } from "@/components/sections/hero-section"
 import { ManifestoSection } from "@/components/sections/manifesto-section"
 import { FeaturesSection } from "@/components/sections/features-section"
 import { EventsSection } from "@/components/sections/events-section"
+import { MemberSpotlight } from "@/components/sections/member-spotlight"
 import { ShowcaseSection } from "@/components/sections/showcase-section"
 import { CarouselSection } from "@/components/sections/carousel-section"
 import { InsightsSection } from "@/components/sections/insights-section"
@@ -20,6 +21,15 @@ async function getEvents() {
     .from('events')
     .select('*')
     .order('date', { ascending: true })
+  return data || []
+}
+
+async function getMembers() {
+  const { data } = await supabase
+    .from('members')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(10)
   return data || []
 }
 
@@ -42,8 +52,9 @@ async function getPartners() {
 
 export default async function Home() {
   // Fetch everything in parallel
-  const [events, projects, partners] = await Promise.all([
+  const [events, members, projects, partners] = await Promise.all([
     getEvents(),
+    getMembers(),
     getProjects(),
     getPartners(),
   ])
@@ -56,6 +67,7 @@ export default async function Home() {
         <ManifestoSection />
         <FeaturesSection />
         <EventsSection initialData={events} />
+        <MemberSpotlight initialData={members} />
         <ShowcaseSection initialData={projects} />
         <CarouselSection />
         <InsightsSection />

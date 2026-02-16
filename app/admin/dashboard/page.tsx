@@ -595,12 +595,12 @@ function AddProjectDialog({ onAdd }: { onAdd: () => void }) {
 
 function AddEventDialog({ onAdd }: { onAdd: () => void }) {
   const [isOpen, setIsOpen] = useState(false); const [isSaving, setIsSaving] = useState(false)
-  const [formData, setFormData] = useState({ title: "", date: "", location: "", luma_url: "", time_range: "", status: "Upcoming" })
+  const [formData, setFormData] = useState({ title: "", date: "", location: "", luma_url: "", time_range: "", status: "Upcoming", image_url: "" })
 
   const handleSubmit = async (e: any) => {
     e.preventDefault(); setIsSaving(true)
     const { error } = await supabase.from('events').insert([formData])
-    if (!error) { toast.success("Event Created"); onAdd(); setIsOpen(false); setFormData({ title: "", date: "", location: "", luma_url: "", time_range: "", status: "Upcoming" }); }
+    if (!error) { toast.success("Event Created"); onAdd(); setIsOpen(false); setFormData({ title: "", date: "", location: "", luma_url: "", time_range: "", status: "Upcoming", image_url: "" }); }
     setIsSaving(false)
   }
 
@@ -611,6 +611,9 @@ function AddEventDialog({ onAdd }: { onAdd: () => void }) {
         <div className="p-8 pb-4"><DialogHeader><DialogTitle className="text-3xl font-serif">New Event</DialogTitle></DialogHeader></div>
         <div className="flex-1 overflow-y-auto px-8 py-2 custom-scrollbar">
           <form id="event-form" onSubmit={handleSubmit} className="space-y-6 pb-8">
+            <FormGroup label="Event Poster" icon={<ImageIcon className="w-4 h-4" />}>
+              <ImageUpload value={formData.image_url} onChange={url => setFormData({...formData, image_url: url})} label="Upload Event Poster" />
+            </FormGroup>
             <FormGroup label="Event Title" icon={<Type className="w-4 h-4" />}><Input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required className="bg-secondary/30 h-11 rounded-xl" /></FormGroup>
             <div className="grid grid-cols-2 gap-4">
               <FormGroup label="Date" icon={<Calendar className="w-4 h-4" />}><Input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} required className="bg-secondary/30 h-11 rounded-xl" /></FormGroup>
