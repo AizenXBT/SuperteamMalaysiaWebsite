@@ -84,7 +84,7 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
       <div className="relative">
         <Quote className="absolute -top-2 -left-2 w-8 h-8 text-iris/5 -z-10" />
         <p className="text-foreground/80 text-sm leading-relaxed font-medium">
-          {t.text}
+          {t.content}
         </p>
       </div>
     </div>

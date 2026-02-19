@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 import { toast } from "sonner"
 import { supabase } from "@/lib/supabase"
@@ -78,9 +79,6 @@ export function FooterSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="w-8 h-8 bg-iris rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-sans font-bold text-sm">ST</span>
-              </div>
               <span className="font-archivo font-bold text-foreground text-lg tracking-tight">
                 superteam<span className="text-iris ml-1">🇲🇾</span>
               </span>
@@ -184,12 +182,12 @@ export function FooterSection() {
             &copy; {new Date().getFullYear()} Superteam Malaysia. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-muted-foreground hover:text-foreground text-sm" data-clickable>
+            <Link href="/terms" className="text-muted-foreground hover:text-foreground text-sm" data-clickable>
               Terms
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground text-sm" data-clickable>
+            </Link>
+            <Link href="/privacy" className="text-muted-foreground hover:text-foreground text-sm" data-clickable>
               Privacy
-            </a>
+            </Link>
           </div>
         </div>
       </div>
