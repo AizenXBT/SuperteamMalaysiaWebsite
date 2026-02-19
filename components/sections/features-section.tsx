@@ -39,8 +39,13 @@ function BackgroundSlideshow() {
   )
 }
 
-function CommunityAnimation() {
+function CommunityAnimation({ members = [] }: { members?: any[] }) {
   const [active, setActive] = useState(0)
+  
+  // Available members (4 max, if less than 4, repeat)
+  const displayMembers = members.length > 0 
+    ? [...members, ...members, ...members, ...members].slice(0, 4) 
+    : []
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,7 +57,24 @@ function CommunityAnimation() {
   return (
     <div className="flex items-center justify-center h-full">
       <div className="flex -space-x-4">
-        {[0, 1, 2, 3].map((i) => (
+        {displayMembers.length > 0 ? displayMembers.map((member, i) => (
+          <motion.div
+            key={i}
+            className="w-12 h-12 rounded-full bg-iris/20 border-2 border-background flex items-center justify-center text-[10px] font-medium overflow-hidden"
+            animate={{
+              scale: active === i ? 1.2 : 1,
+              backgroundColor: active === i ? "rgb(var(--iris) / 0.4)" : "rgb(var(--iris) / 0.15)",
+              zIndex: active === i ? 10 : 1,
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            {member.photo_url ? (
+              <img src={member.photo_url} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-foreground">{member.name?.substring(0, 2).toUpperCase() || "ST"}</span>
+            )}
+          </motion.div>
+        )) : [0, 1, 2, 3].map((i) => (
           <motion.div
             key={i}
             className="w-12 h-12 rounded-full bg-iris/20 border-2 border-background flex items-center justify-center text-xs font-medium"
@@ -71,7 +93,7 @@ function CommunityAnimation() {
   )
 }
 
-function ProjectsAnimation() {
+function ProjectsAnimation({ projects = [] }: { projects?: any[] }) {
   const [layout, setLayout] = useState(0)
 
   useEffect(() => {
@@ -82,42 +104,49 @@ function ProjectsAnimation() {
   }, [])
 
   const layouts = ["grid-cols-2 grid-rows-2", "grid-cols-3 grid-rows-1", "grid-cols-1 grid-rows-3"]
+  
+  // Use projects from directory (three random max or first three)
+  const displayProjects = projects.length > 0 ? projects.slice(0, 3) : [null, null, null]
 
   return (
     <div className="h-full p-4 flex items-center justify-center">
       <motion.div className={`grid ${layouts[layout]} gap-2 w-full max-w-[140px]`} layout>
-        {[1, 2, 3].map((i) => (
+        {displayProjects.map((project, i) => (
           <motion.div
-            key={i}
-            className="bg-iris/20 rounded-md min-h-[30px]"
+            key={project?.id || i}
+            className="bg-iris/20 rounded-md min-h-[30px] flex items-center justify-center p-1 overflow-hidden"
             layout
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          />
+          >
+            {project ? (
+              <span className="text-[8px] font-bold text-iris/80 uppercase truncate px-1">{project.name}</span>
+            ) : null}
+          </motion.div>
         ))}
       </motion.div>
     </div>
   )
 }
 
-function EventsAnimation() {
-  const [day, setDay] = useState(15)
+function EventsAnimation({ nextDate, fallback }: { nextDate?: string, fallback?: number }) {
+  const [displayDay, setDisplayDay] = useState(fallback || 15)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDay((prev) => (prev >= 28 ? 1 : prev + 1))
-    }, 800)
-    return () => clearInterval(interval)
-  }, [])
+    if (nextDate) {
+      const day = new Date(nextDate).getDate()
+      setDisplayDay(day)
+    }
+  }, [nextDate])
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-2">
-      <span className="text-4xl md:text-5xl font-serif text-foreground">{day}</span>
+      <span className="text-4xl md:text-5xl font-serif text-foreground">{displayDay}</span>
       <span className="text-xs text-muted-foreground uppercase tracking-wider">Next Event</span>
     </div>
   )
 }
 
-function EarnAnimation() {
+function EarnAnimation({ value }: { value?: string }) {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -127,7 +156,7 @@ function EarnAnimation() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4">
-      <span className="text-3xl md:text-4xl font-sans font-medium text-foreground">$50k+</span>
+      <span className="text-3xl md:text-4xl font-sans font-medium text-foreground">{value || "$50k+"}</span>
       <span className="text-sm text-muted-foreground">Earned by Members</span>
       <div className="w-full max-w-[120px] h-1.5 bg-foreground/10 rounded-full overflow-hidden">
         <motion.div
@@ -141,42 +170,54 @@ function EarnAnimation() {
   )
 }
 
-const pillars = [
-  {
-    icon: Users,
-    label: "Community",
-    title: "Connect with peers.",
-    description:
-      "Join a vibrant community of developers, designers, and creators. Share knowledge, collaborate on projects, and grow together.",
-    animation: CommunityAnimation,
-  },
-  {
-    icon: Layers,
-    label: "Projects",
-    title: "Build your ideas.",
-    description:
-      "Create powerful projects that showcase your skills. Our platform helps you collaborate, get feedback, and bring your ideas to life.",
-    animation: ProjectsAnimation,
-  },
-  {
-    icon: Calendar,
-    label: "Events",
-    title: "Learn and grow.",
-    description:
-      "Attend workshops, hackathons, and networking events. Learn from industry experts and connect with like-minded builders.",
-    animation: EventsAnimation,
-  },
-  {
-    icon: Coins,
-    label: "Earn",
-    title: "Monetize your skills.",
-    description:
-      "Discover bounties, hackathons, and grants within the Solana ecosystem. Turn your talent into real-world opportunities.",
-    animation: EarnAnimation,
-  },
-]
+export function FeaturesSection({ 
+  members = [], 
+  projects = [], 
+  earnedValue,
+  nextEventDate,
+  nextEventFallback
+}: { 
+  members?: any[], 
+  projects?: any[], 
+  earnedValue?: string,
+  nextEventDate?: string,
+  nextEventFallback?: number
+}) {
+  const pillars = [
+    {
+      icon: Users,
+      label: "Community",
+      title: "Connect with peers.",
+      description:
+        "Join a vibrant community of developers, designers, and creators. Share knowledge, collaborate on projects, and grow together.",
+      animation: <CommunityAnimation members={members} />,
+    },
+    {
+      icon: Layers,
+      label: "Projects",
+      title: "Build your ideas.",
+      description:
+        "Create powerful projects that showcase your skills. Our platform helps you collaborate, get feedback, and bring your ideas to life.",
+      animation: <ProjectsAnimation projects={projects} />,
+    },
+    {
+      icon: Calendar,
+      label: "Events",
+      title: "Learn and grow.",
+      description:
+        "Attend workshops, hackathons, and networking events. Learn from industry experts and connect with like-minded builders.",
+      animation: <EventsAnimation nextDate={nextEventDate} fallback={nextEventFallback} />,
+    },
+    {
+      icon: Coins,
+      label: "Earn",
+      title: "Monetize your skills.",
+      description:
+        "Discover bounties, hackathons, and grants within the Solana ecosystem. Turn your talent into real-world opportunities.",
+      animation: <EarnAnimation value={earnedValue} />,
+    },
+  ]
 
-export function FeaturesSection() {
   return (
     <section id="pillars" className="relative bg-background px-6 py-24 overflow-hidden">
       <BackgroundSlideshow />
@@ -199,7 +240,6 @@ export function FeaturesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pillars.map((pillar, i) => {
-            const Animation = pillar.animation
             return (
               <motion.div
                 key={i}
@@ -213,7 +253,7 @@ export function FeaturesSection() {
                 data-clickable
               >
                 <div className="flex-1">
-                  <Animation />
+                  {pillar.animation}
                 </div>
                 <div className="mt-4">
                   <span className="text-iris text-xs font-medium uppercase tracking-wider">{pillar.label}</span>

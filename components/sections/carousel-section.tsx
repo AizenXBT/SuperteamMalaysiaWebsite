@@ -113,11 +113,16 @@ function ScrollingColumn({ items, duration, reverse = false }: { items: any[], d
   )
 }
 
-export function CarouselSection() {
+export function CarouselSection({ initialData }: { initialData?: any[] }) {
+  const data = initialData && initialData.length > 0 ? initialData : []
+  
   // Distribute items into 3 columns
-  const col1 = [testimonials[0], testimonials[3], testimonials[6]]
-  const col2 = [testimonials[1], testimonials[4], testimonials[7]]
-  const col3 = [testimonials[2], testimonials[5], testimonials[8]]
+  const col1 = data.filter((_, i) => i % 3 === 0)
+  const col2 = data.filter((_, i) => i % 3 === 1)
+  const col3 = data.filter((_, i) => i % 3 === 2)
+
+  // Ensure columns aren't empty for the animation to work
+  if (data.length === 0) return null;
 
   return (
     <section id="testimonials" className="bg-background py-32 overflow-hidden relative">

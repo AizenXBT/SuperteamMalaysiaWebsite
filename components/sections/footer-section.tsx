@@ -4,6 +4,9 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 
+import { toast } from "sonner"
+import { supabase } from "@/lib/supabase"
+
 const footerLinks = [
   { label: "Members", href: "/members" },
   { label: "Products", href: "/products" },
@@ -34,6 +37,22 @@ const socialLinks = [
 
 export function FooterSection() {
   const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    const { error } = await supabase.from('contact_submissions').insert([{ email }])
+
+    if (!error) {
+      toast.success("Thanks for joining!")
+      setEmail("")
+    } else {
+      toast.error("Something went wrong. Please try again.")
+    }
+    setIsSubmitting(false)
+  }
 
   return (
     <footer className="relative bg-background px-6 py-24 overflow-hidden">
@@ -121,20 +140,27 @@ export function FooterSection() {
             <p className="text-muted-foreground text-sm mb-6">
               Join us on our journey to build the Solana ecosystem in Malaysia.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
+            <form onSubmit={handleSubmit} className="flex gap-2">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="flex-1 bg-secondary border-0 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-iris"
+                className="flex-1 bg-secondary border-0 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-iris transition-all disabled:opacity-50"
+                required
+                disabled={isSubmitting}
               />
               <button
                 type="submit"
-                className="bg-foreground text-background p-3 rounded-lg hover:bg-foreground/90 transition-colors"
+                className="bg-foreground text-background p-3 rounded-lg hover:bg-foreground/90 transition-colors disabled:opacity-50"
                 data-clickable
+                disabled={isSubmitting}
               >
-                <ArrowRight className="w-5 h-5" />
+                {isSubmitting ? (
+                  <div className="w-5 h-5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                ) : (
+                  <ArrowRight className="w-5 h-5" />
+                )}
               </button>
             </form>
             <p className="text-muted-foreground text-xs mt-2">

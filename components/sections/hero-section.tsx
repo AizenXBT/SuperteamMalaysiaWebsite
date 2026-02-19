@@ -25,7 +25,7 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ]
 
-export function HeroSection() {
+export function HeroSection({ members = [], memberCount = 500, eventCount = 50 }: { members?: any[], memberCount?: number, eventCount?: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -224,25 +224,29 @@ export function HeroSection() {
           transition={{ delay: 1.2 }}
         >
           <div className="flex -space-x-3">
-            {[0, 1, 2, 3].map((i) => (
+            {members.slice(0, 4).map((member, i) => (
               <div
-                key={i}
-                className="w-10 h-10 rounded-full bg-secondary border-2 border-background flex items-center justify-center text-xs font-medium text-muted-foreground"
+                key={member.id || i}
+                className="w-10 h-10 rounded-full bg-secondary border-2 border-background flex items-center justify-center text-xs font-medium text-muted-foreground overflow-hidden shadow-sm"
               >
-                {["DV", "AR", "SM", "KL"][i]}
+                {member.photo_url ? (
+                  <img src={member.photo_url} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <span>{member.name?.substring(0, 2).toUpperCase() || "ST"}</span>
+                )}
               </div>
             ))}
-            <div className="w-10 h-10 rounded-full bg-iris/20 border-2 border-background flex items-center justify-center text-xs font-medium text-iris">
+            <div className="w-10 h-10 rounded-full bg-iris/20 border-2 border-background flex items-center justify-center text-xs font-medium text-iris backdrop-blur-sm">
               +
             </div>
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              <strong className="text-foreground">500+</strong> members
+              <strong className="text-foreground">{memberCount}+</strong> members
             </span>
-            <span className="w-px h-4 bg-border" />
+            <span className="w-px h-4 bg-border/40" />
             <span>
-              <strong className="text-foreground">50+</strong> events
+              <strong className="text-foreground">{eventCount}+</strong> events
             </span>
           </div>
         </motion.div>

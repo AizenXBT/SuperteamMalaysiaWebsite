@@ -32,7 +32,7 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
   )
 }
 
-const carouselImages = [
+const defaultCarouselImages = [
   "/media/images/carousel/default1.jpg",
   "/media/images/carousel/default2.jpg",
   "/media/images/carousel/default3.jpg",
@@ -40,18 +40,19 @@ const carouselImages = [
 
 const CORNER_TILT = 5
 
-function ImageCarousel() {
+function ImageCarousel({ images = [], corners = { left: null, right: null } }: { images?: string[], corners?: { left: string | null, right: string | null } }) {
   const [index, setIndex] = useState(0)
   const [direction, setDirection] = useState(0)
+  const displayImages = images.length > 0 ? images : defaultCarouselImages
 
   const next = useCallback(() => {
     setDirection(1)
-    setIndex((prev) => (prev + 1) % carouselImages.length)
-  }, [])
+    setIndex((prev) => (prev + 1) % displayImages.length)
+  }, [displayImages.length])
 
   const prev = () => {
     setDirection(-1)
-    setIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
+    setIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length)
   }
 
   useEffect(() => {
@@ -85,7 +86,7 @@ function ImageCarousel() {
         viewport={{ once: true }}
         className="absolute -bottom-12 -left-12 w-32 h-32 md:w-48 md:h-48 z-30 rounded-2xl overflow-hidden border-4 border-background shadow-2xl hidden sm:block"
       >
-        <img src="/media/images/banners/malaysia1.jpg" className="w-full h-full object-cover" alt="" />
+        <img src={corners.left || "/media/images/banners/malaysia1.jpg"} className="w-full h-full object-cover" alt="" />
       </motion.div>
 
       <motion.div 
@@ -94,7 +95,7 @@ function ImageCarousel() {
         viewport={{ once: true }}
         className="absolute -bottom-12 -right-12 w-32 h-32 md:w-48 md:h-48 z-30 rounded-2xl overflow-hidden border-4 border-background shadow-2xl hidden sm:block"
       >
-        <img src="/media/images/banners/malaysia2.jpg" className="w-full h-full object-cover" alt="" />
+        <img src={corners.right || "/media/images/banners/malaysia2.jpg"} className="w-full h-full object-cover" alt="" />
       </motion.div>
 
       <motion.div 
@@ -107,7 +108,7 @@ function ImageCarousel() {
         <AnimatePresence initial={false} custom={direction}>
           <motion.img
             key={index}
-            src={carouselImages[index]}
+            src={displayImages[index]}
             custom={direction}
             variants={variants}
             initial="enter"
@@ -143,7 +144,7 @@ function ImageCarousel() {
         </div>
 
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {carouselImages.map((_, i) => (
+          {displayImages.map((_, i) => (
             <button
               key={i}
               onClick={() => {
@@ -161,15 +162,29 @@ function ImageCarousel() {
   )
 }
 
-const stats = [
-  { value: 500, suffix: "+", label: "Community", sublabel: "Active Members" },
-  { value: 50, suffix: "+", label: "Events", sublabel: "Hosted & Counting" },
-  { value: 30, suffix: "+", label: "Projects", sublabel: "Built on Solana" },
-  { value: 100, suffix: "+", label: "Bounties", sublabel: "Completed" },
-]
-
-export function ManifestoSection() {
+export function ManifestoSection({ 
+  memberCount = 500, 
+  eventCount = 50, 
+  projectCount = 30, 
+  bountyCount = 100,
+  cmsAssets
+}: { 
+  memberCount?: number, 
+  eventCount?: number, 
+  projectCount?: number, 
+  bountyCount?: number,
+  cmsAssets?: { carousel: string[], corners: { left: string | null, right: string | null } }
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
+  
+  // Dynamic stats calculation (n-1)+
+  const stats = [
+    { value: memberCount > 0 ? memberCount - 1 : 0, suffix: "+", label: "Community", sublabel: "Active Members" },
+    { value: eventCount > 0 ? eventCount - 1 : 0, suffix: "+", label: "Events", sublabel: "Hosted & Counting" },
+    { value: projectCount > 0 ? projectCount - 1 : 0, suffix: "+", label: "Projects", sublabel: "Built on Solana" },
+    { value: bountyCount, suffix: "+", label: "Bounties", sublabel: "Completed" },
+  ]
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -179,6 +194,7 @@ export function ManifestoSection() {
 
   return (
     <section id="about" ref={containerRef} className="relative bg-background px-6 py-32">
+      {/* Stats Row */}
       <div className="max-w-6xl mx-auto mb-32">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
@@ -202,6 +218,7 @@ export function ManifestoSection() {
         </div>
       </div>
 
+      {/* Grouped Manifesto Text */}
       <div className="max-w-5xl mx-auto flex flex-col items-center">
         <div className="relative mb-12">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-tight text-center text-foreground/20">
@@ -233,7 +250,7 @@ export function ManifestoSection() {
         </motion.div>
       </div>
 
-      <ImageCarousel />
+      <ImageCarousel images={cmsAssets?.carousel} corners={cmsAssets?.corners} />
     </section>
   )
 }

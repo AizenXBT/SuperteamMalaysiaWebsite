@@ -17,62 +17,93 @@ import { supabase } from "@/lib/supabase"
 export const dynamic = 'force-dynamic'
 
 async function getEvents() {
-  const { data } = await supabase
-    .from('events')
-    .select('*')
-    .order('date', { ascending: true })
+  const { data } = await supabase.from('events').select('*').order('date', { ascending: true })
   return data || []
 }
 
 async function getMembers() {
-  const { data } = await supabase
-    .from('members')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(10)
+  const { data } = await supabase.from('members').select('*').order('created_at', { ascending: false })
   return data || []
 }
 
 async function getProjects() {
-  const { data } = await supabase
-    .from('projects')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(4)
+  const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false })
   return data || []
 }
 
 async function getPartners() {
-  const { data } = await supabase
-    .from('partners')
-    .select('*')
-    .order('display_order', { ascending: true })
+  const { data } = await supabase.from('partners').select('*').order('display_order', { ascending: true })
   return data || []
 }
 
+async function getTestimonials() {
+  const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false })
+  return data || []
+}
+
+async function getFAQs() {
+  const { data } = await supabase.from('faqs').select('*').order('display_order', { ascending: true })
+  return data || []
+}
+
+async function getSiteSettings() {
+  const { data } = await supabase.from('site_content').select('*')
+  // Transform array to key-value object
+  return data?.reduce((acc: any, item: any) => {
+    acc[item.key] = item.content
+    return acc
+  }, {}) || {}
+}
+
 export default async function Home() {
-  // Fetch everything in parallel
-  const [events, members, projects, partners] = await Promise.all([
+  const [events, members, projects, partners, testimonials, faqs, settings] = await Promise.all([
     getEvents(),
     getMembers(),
     getProjects(),
     getPartners(),
+    getTestimonials(),
+    getFAQs(),
+    getSiteSettings(),
   ])
+
+  // CMS Values from settings
+  const cmsCounts = {
+    bounties: settings?.impact_stats?.bounties || 100,
+    earned: settings?.financial_stats?.earned || "$50k+",
+    nextEventFallback: settings?.luma_settings?.next_event_number,
+    carouselImages: settings?.manifesto_assets?.carousel_images || [],
+    cornerImages: settings?.manifesto_assets?.corner_images || { left: null, right: null }
+  }
 
   return (
     <LenisProvider>
       <main className="custom-cursor bg-background text-foreground">
         <CustomCursor />
-        <HeroSection />
-        <ManifestoSection />
-        <FeaturesSection />
-        <EventsSection initialData={events} />
+        <HeroSection members={members.slice(0, 4)} eventCount={events.length} memberCount={members.length} />
+        <ManifestoSection 
+          memberCount={members.length} 
+          eventCount={events.length} 
+          projectCount={projects.length} 
+          bountyCount={cmsCounts.bounties}
+          cmsAssets={{ 
+            carousel: cmsCounts.carouselImages, 
+            corners: cmsCounts.cornerImages 
+          }}
+        />
+        <FeaturesSection 
+          members={members.slice(0, 4)} 
+          projects={projects.slice(0, 3)} 
+          earnedValue={cmsCounts.earned}
+          nextEventDate={events.find(e => e.status === 'Upcoming')?.date}
+          nextEventFallback={cmsCounts.nextEventFallback}
+        />
+        <EventsSection initialData={events} settings={settings?.luma_settings} />
         <MemberSpotlight initialData={members} />
-        <ShowcaseSection initialData={projects} />
-        <CarouselSection />
+        <ShowcaseSection initialData={projects.slice(0, 4)} />
+        <CarouselSection initialData={testimonials} />
         <InsightsSection />
         <PartnersSection initialData={partners} />
-        <FAQSection />
+        <FAQSection initialData={faqs} />
         <JoinSection />
         <FooterSection />
       </main>

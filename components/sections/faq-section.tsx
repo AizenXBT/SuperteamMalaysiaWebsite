@@ -37,8 +37,9 @@ const faqs = [
   },
 ]
 
-export function FAQSection() {
+export function FAQSection({ initialData }: { initialData?: any[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const displayFaqs = initialData && initialData.length > 0 ? initialData : faqs
 
   return (
     <section id="faq" className="bg-secondary px-6 py-24">
@@ -63,7 +64,7 @@ export function FAQSection() {
         </motion.div>
 
         <div className="divide-y divide-border/40">
-          {faqs.map((faq, i) => (
+          {displayFaqs.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
