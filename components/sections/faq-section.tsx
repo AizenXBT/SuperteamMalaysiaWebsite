@@ -4,42 +4,11 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Plus, Minus } from "lucide-react"
 
-const faqs = [
-  {
-    question: "What is Superteam Malaysia?",
-    answer:
-      "Superteam Malaysia is the Malaysian chapter of the global Superteam network -- a community of developers, designers, creators, and operators building and earning within the Solana ecosystem through bounties, hackathons, grants, and real-world projects.",
-  },
-  {
-    question: "Who can join Superteam Malaysia?",
-    answer:
-      "Everyone is welcome! Whether you are a developer, designer, writer, marketer, or simply curious about Web3 and Solana, you can join our community. No prior blockchain experience is required.",
-  },
-  {
-    question: "How do members earn through Superteam?",
-    answer:
-      "Members can earn through completing bounties, participating in hackathons, receiving grants for their projects, and finding job opportunities within the Solana ecosystem. All earnings are in crypto or fiat depending on the opportunity.",
-  },
-  {
-    question: "Is Superteam Malaysia free to join?",
-    answer:
-      "Yes, joining Superteam Malaysia is completely free. Simply join our Telegram or Discord community, introduce yourself, and start participating in events and opportunities.",
-  },
-  {
-    question: "How can projects collaborate with Superteam MY?",
-    answer:
-      "Projects building on Solana can collaborate with us by posting bounties, sponsoring events, or reaching out for partnership opportunities. Contact us through our social channels or the form on this site.",
-  },
-  {
-    question: "Do I need to be a developer to join?",
-    answer:
-      "Not at all. Superteam Malaysia has sub-groups for Developers, Designers, Writers, Growth Marketers, and more. If you have a skill and a willingness to learn about Web3, there is a place for you here.",
-  },
-]
-
 export function FAQSection({ initialData }: { initialData?: any[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
-  const displayFaqs = initialData && initialData.length > 0 ? initialData : faqs
+  const displayFaqs = initialData && initialData.length > 0 ? initialData : []
+
+  if (displayFaqs.length === 0) return null;
 
   return (
     <section id="faq" className="bg-secondary px-6 py-24">
@@ -50,7 +19,7 @@ export function FAQSection({ initialData }: { initialData?: any[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-muted-foreground text-sm uppercase tracking-widest mb-4">FAQ</p>
+          <p className="text-muted-foreground text-sm uppercase tracking-widest mb-4 font-bold">FAQ</p>
           <h2 className="text-3xl md:text-5xl font-serif text-foreground">
             Frequently asked <em className="italic text-iris">questions</em>
           </h2>

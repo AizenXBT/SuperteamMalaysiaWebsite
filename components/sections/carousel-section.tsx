@@ -1,101 +1,38 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Twitter, Quote } from "lucide-react"
 
-const testimonials = [
-  {
-    name: "Kate",
-    handle: "@eggiekate",
-    text: "Congratulations new @SuperteamMY leads @m_onchain @W_Han_01 🙌 well deserved 🫶 Was fun ending the year with everyone at the Superteam Malaysia Year End Party ✨",
-    id: "2005824809750467068",
-    height: "h-auto"
-  },
-  {
-    name: "Superteam Malaysia",
-    handle: "@SuperteamMY",
-    text: "2/ Drum roll…🥁 Winners! 🥇 @chaindex_xyz 🥈 @MirrorFi_xyz 🥉 @yieldsdotso. Huge congrats to all 3 with stellar presentations, demos & tight answers in Q&A🚀",
-    id: "1993507268864938021",
-    height: "h-auto"
-  },
-  {
-    name: "Superteam Malaysia",
-    handle: "@SuperteamMY",
-    text: "Congrats @chaindex_xyz, glad to see projects from Malaysia to Taiwan for the @AppWorks accelerator! Kudos our lovely builder @m_onchain and her husband!",
-    id: "2009200588106739975",
-    height: "h-auto"
-  },
-  {
-    name: "Superteam Malaysia",
-    handle: "@SuperteamMY",
-    text: "1/ Big congrats to our #CYPHERthonMY winners by @SuperteamMY @solana, powered by @AppWorks, @jelawangcapital, @magicblock, @sns, @AWSstartups. 🥇 @blox_malaysia 🥈 @chaindex_xyz...",
-    id: "1985242141023719477",
-    height: "h-auto"
-  },
-  {
-    name: "Superteam Malaysia",
-    handle: "@SuperteamMY",
-    text: "Congrats to all the winners! And so proud of the projects in Malaysia that can make it this far! @mirrorfi_xyz",
-    id: "1958317788352872540",
-    height: "h-auto"
-  },
-  {
-    name: "Superteam Malaysia",
-    handle: "@SuperteamMY",
-    text: "Congrats to our Malaysian Projects @hypebiscus_xyz and the new project Yeeteora that will be participating in @colosseum next! Malaysia is coming with a bunch of super dev and founders this time, gonna rewrite the history !",
-    id: "1970763694201262405",
-    height: "h-auto"
-  },
-  {
-    name: "Solana Foundation",
-    handle: "@solana",
-    text: "The speed of innovation in the Malaysian Solana ecosystem is incredible. Builders are shipping real products.",
-    id: "ext1",
-    height: "h-auto"
-  },
-  {
-    name: "Web3 Builder",
-    handle: "@buidl_my",
-    text: "Superteam MY is more than a community, it's an accelerator for your career in Web3. Best decision I made this year.",
-    id: "ext2",
-    height: "h-auto"
-  },
-  {
-    name: "Ecosystem Lead",
-    handle: "@st_global",
-    text: "Malaysia is becoming a powerhouse for Solana builders in SEA. The talent here is world-class.",
-    id: "ext3",
-    height: "h-auto"
-  }
-]
-
-function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
+function TestimonialCard({ t }: { t: any }) {
   return (
-    <div className={`w-full bg-secondary/30 backdrop-blur-xl rounded-[2.5rem] p-8 border border-border/40 shadow-xl mb-6 group hover:border-iris/40 transition-all duration-500`}>
-      <div className="flex items-center justify-between mb-6">
+    <div className="flex-shrink-0 w-full bg-background rounded-xl p-6 shadow-2xl border border-border/50 mb-6">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-iris/20 flex items-center justify-center text-sm font-medium text-iris">
+            {t.name
+              ? t.name.split(" ").map((n: string) => n[0]).join("")
+              : "ST"}
+          </div>
           <div>
-            <p className="text-sm font-bold text-foreground leading-tight">{t.name}</p>
-            <p className="text-muted-foreground text-[10px] uppercase tracking-widest font-medium">{t.handle}</p>
+            <p className="font-sans font-semibold text-sm text-foreground">{t.name}</p>
+            <p className="text-muted-foreground text-xs">{t.handle}</p>
           </div>
         </div>
-        <Twitter className="w-4 h-4 text-iris/20 group-hover:text-iris transition-colors" />
+        <svg className="w-5 h-5 text-foreground/40" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
       </div>
-      <div className="relative">
-        <Quote className="absolute -top-2 -left-2 w-8 h-8 text-iris/5 -z-10" />
-        <p className="text-foreground/80 text-sm leading-relaxed font-medium">
-          {t.content}
-        </p>
-      </div>
+      <p className="text-foreground/80 text-sm leading-relaxed">{t.content}</p>
     </div>
   )
 }
 
 function ScrollingColumn({ items, duration, reverse = false }: { items: any[], duration: number, reverse?: boolean }) {
+  if (items.length === 0) return <div className="h-[800px]" />;
+  
   return (
     <div className="relative flex flex-col gap-6 overflow-hidden h-[800px]">
       <motion.div
-        className="flex flex-col gap-6"
+        className="flex flex-col"
         animate={{ 
           y: reverse ? [0, -1200] : [-1200, 0] 
         }}
@@ -105,7 +42,7 @@ function ScrollingColumn({ items, duration, reverse = false }: { items: any[], d
           ease: "linear",
         }}
       >
-        {[...items, ...items, ...items].map((t, i) => (
+        {[...items, ...items, ...items, ...items].map((t, i) => (
           <TestimonialCard key={i} t={t} />
         ))}
       </motion.div>
@@ -121,11 +58,11 @@ export function CarouselSection({ initialData }: { initialData?: any[] }) {
   const col2 = data.filter((_, i) => i % 3 === 1)
   const col3 = data.filter((_, i) => i % 3 === 2)
 
-  // Ensure columns aren't empty for the animation to work
+  // Only show section if we have data
   if (data.length === 0) return null;
 
   return (
-    <section id="testimonials" className="bg-background py-32 overflow-hidden relative">
+    <section id="testimonials" className="bg-background py-32 overflow-hidden relative border-y border-border/10">
       <div className="max-w-7xl mx-auto px-6 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <motion.div
           initial={{ opacity: 0, x: -20 }}

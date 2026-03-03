@@ -148,7 +148,8 @@ export function MemberSpotlight({ initialData }: { initialData?: any[] }) {
           href="/members" 
           className="group flex items-center gap-3 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-iris transition-all"
         >
-          View All members 
+          <span className="hidden md:inline">View All members</span>
+          <span className="md:hidden">View All</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>

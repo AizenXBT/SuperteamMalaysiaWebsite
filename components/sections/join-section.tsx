@@ -1,9 +1,39 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react"
+import { supabase } from "@/lib/supabase"
+import { toast } from "sonner"
 
 export function JoinSection() {
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setIsSubmitting(true)
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([{ email }])
+
+      if (error) throw error
+
+      setIsSubmitted(true)
+      setEmail("")
+      toast.success("Thanks for reaching out!")
+    } catch (error) {
+      console.error("Submission error:", error)
+      toast.error("Something went wrong. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <section id="join" className="bg-iris px-6 py-32 overflow-hidden relative">
       {/* Large watermark text */}
@@ -33,33 +63,79 @@ export function JoinSection() {
           Join the movement. Connect, learn, build, and earn with the best talent in Malaysia&apos;s Web3 ecosystem.
         </motion.p>
 
+        {/* Email Form */}
         <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
+          className="max-w-md mx-auto mt-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
+          {isSubmitted ? (
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-500">
+              <CheckCircle2 className="w-12 h-12 text-lime" />
+              <p className="text-white font-bold text-xl">You&apos;re on the list!</p>
+              <p className="text-white/60 text-sm">We&apos;ll be in touch with you shortly.</p>
+              <button 
+                onClick={() => setIsSubmitted(false)}
+                className="mt-2 text-white/40 text-xs hover:text-white underline"
+              >
+                Send another message
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                placeholder="Enter your email..."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-6 py-4 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-lime/50 transition-all"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-primary-foreground text-iris px-8 py-4 rounded-xl font-bold hover:bg-white transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    Get in touch
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+        </motion.div>
+
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
           <a
             href="https://t.me/SuperteamMY"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary-foreground text-iris px-8 py-3.5 rounded-lg font-medium hover:bg-primary-foreground/90 transition-colors flex items-center gap-2"
+            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium"
             data-clickable
           >
             Join Telegram
             <ArrowRight className="w-4 h-4" />
           </a>
+          <span className="hidden sm:inline w-1 h-1 rounded-full bg-white/20" />
           <a
             href="https://x.com/SuperteamMY"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary-foreground/10 text-primary-foreground border border-primary-foreground/20 px-8 py-3.5 rounded-lg font-medium hover:bg-primary-foreground/20 transition-colors flex items-center gap-2"
+            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium"
             data-clickable
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
             Follow on X
           </a>
         </motion.div>
