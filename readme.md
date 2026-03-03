@@ -1,3 +1,5 @@
+![Superteam Malaysia Banner](/public/media/images/banners/stmy-official-banner.jpg)
+
 # Superteam Malaysia Website
 
 A dynamic community hub and CMS for Superteam Malaysia builders.
