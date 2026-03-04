@@ -263,63 +263,94 @@ export function MembersContent({ initialData }: { initialData: any[] }) {
           </CommandList>
         </CommandDialog>
 
-        {/* Header */}
-        <nav className="px-6 py-6 flex items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50">
-          <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" data-clickable>
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Back</span>
-          </Link>
-          
-          <Logo />
-
-          <div className="flex items-center gap-2 md:gap-4">
-            <ThemeToggle />
-            
-            {/* Mobile Hamburger with Bottom Drawer */}
-            <div className="md:hidden">
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button variant="ghost" size="icon-sm" className="h-9 w-9">
-                    <Menu className="h-5 w-5" />
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent className="bg-background/95 backdrop-blur-xl border-t border-border/50 pb-12">
-                  <DrawerHeader className="text-center border-b border-border/10 pb-6">
-                    <DrawerTitle className="flex justify-center">
-                      <Logo />
-                    </DrawerTitle>
-                  </DrawerHeader>
-                  <div className="flex flex-col gap-1 p-6 max-h-[60vh] overflow-y-auto">
-                    {navLinks.map((link, i) => (
-                      <Link
-                        key={i}
-                        href={link.href}
-                        className="text-xl font-serif text-foreground hover:text-iris transition-colors py-3 text-center"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                    <div className="mt-6 pt-6 border-t border-border/50">
-                      <a
-                        href="https://t.me/SuperteamMY"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex bg-iris text-primary-foreground px-6 py-4 rounded-2xl text-lg font-medium hover:bg-iris/90 transition-colors items-center justify-between group"
-                      >
-                        <span>Join Community</span>
-                        <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                      </a>
-                    </div>
-                  </div>
-                </DrawerContent>
-              </Drawer>
+        {/* Floating Navbar */}
+        <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-6 flex justify-center">
+          <motion.nav
+            className="w-full max-w-7xl flex items-center justify-between bg-background/40 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)]"
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="flex items-center gap-4">
+              <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mr-2" data-clickable>
+                <ArrowLeft className="w-4 h-4" />
+              </Link>
+              <Logo />
             </div>
-            
-            <div className="hidden md:block w-4" />
-          </div>
-        </nav>
 
-        <section className="max-w-6xl mx-auto px-6 py-16">
+            {/* Desktop Nav */}
+            <div className="hidden lg:flex items-center gap-8">
+              {navLinks.map((link, i) => (
+                <Link
+                  key={i}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                  data-clickable
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2 md:gap-4">
+              <ThemeToggle />
+              
+              {/* Desktop CTA */}
+              <a
+                href="https://t.me/SuperteamMY"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex bg-iris text-primary-foreground px-5 py-2.5 rounded-2xl text-sm font-medium hover:bg-iris/90 transition-colors items-center gap-2"
+                data-clickable
+              >
+                Join Community
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              {/* Mobile Hamburger with Bottom Drawer */}
+              <div className="lg:hidden">
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button variant="ghost" size="icon-sm" className="h-9 w-9">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent className="bg-background/95 backdrop-blur-xl border-t border-border/50 pb-12">
+                    <DrawerHeader className="text-center border-b border-border/10 pb-6">
+                      <DrawerTitle className="flex justify-center">
+                        <Logo />
+                      </DrawerTitle>
+                    </DrawerHeader>
+                    <div className="flex flex-col gap-1 p-6 max-h-[60vh] overflow-y-auto">
+                      {navLinks.map((link, i) => (
+                        <Link
+                          key={i}
+                          href={link.href}
+                          className="text-xl font-serif text-foreground hover:text-iris transition-colors py-3 text-center"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                      <div className="mt-6 pt-6 border-t border-border/50">
+                        <a
+                          href="https://t.me/SuperteamMY"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex bg-iris text-primary-foreground px-6 py-4 rounded-2xl text-lg font-medium hover:bg-iris/90 transition-colors items-center justify-between group"
+                        >
+                          <span>Join Community</span>
+                          <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                        </a>
+                      </div>
+                    </div>
+                  </DrawerContent>
+                </Drawer>
+              </div>
+            </div>
+          </motion.nav>
+        </div>
+
+        <section className="max-w-6xl mx-auto px-6 py-32 mt-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
