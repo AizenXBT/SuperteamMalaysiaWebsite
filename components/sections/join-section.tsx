@@ -91,12 +91,12 @@ export function JoinSection() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-6 py-4 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-lime/50 transition-all"
+                className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-6 py-3 h-12 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-lime/50 transition-all text-sm"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-primary-foreground text-iris px-8 py-4 rounded-xl font-bold hover:bg-white transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="bg-primary-foreground text-iris px-8 py-3 h-12 rounded-xl text-sm font-bold hover:bg-white transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
