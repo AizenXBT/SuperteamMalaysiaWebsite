@@ -48,7 +48,7 @@ CLOUDINARY_UPLOAD_PRESET=superteam-malaysia
 
 ### 5. Installation
 ```bash
-cd fe
 pnpm install
-pnpm dev
+pnpm build
+pnpm start
 ```
