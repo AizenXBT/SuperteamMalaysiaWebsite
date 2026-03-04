@@ -36,10 +36,17 @@ export function HeroSection({ members = [], memberCount = 500, eventCount = 50 }
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   const Logo = () => (
-    <a href="/" className="flex items-center gap-2" data-clickable>
-      <span className="font-archivo font-bold text-foreground text-base md:text-lg tracking-tight">
-        superteam<span className="text-iris ml-1">🇲🇾</span>
-      </span>
+    <a href="/" className="flex items-center" data-clickable>
+      <img
+        src="/media/images/website-logo-light-mode.jpg"
+        alt="Superteam Malaysia"
+        className="h-8 md:h-10 w-auto dark:hidden"
+      />
+      <img
+        src="/media/images/website-logo-dark-mode.jpg"
+        alt="Superteam Malaysia"
+        className="h-8 md:h-10 w-auto hidden dark:block"
+      />
     </a>
   )
 

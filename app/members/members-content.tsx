@@ -206,10 +206,17 @@ export function MembersContent({ initialData }: { initialData: any[] }) {
   }, [])
 
   const Logo = () => (
-    <Link href="/" className="flex items-center gap-2">
-      <span className="font-archivo font-bold text-foreground text-sm md:text-base tracking-tight">
-        superteam<span className="text-iris ml-1">🇲🇾</span>
-      </span>
+    <Link href="/" className="flex items-center">
+      <img
+        src="/media/images/website-logo-light-mode.jpg"
+        alt="Superteam Malaysia"
+        className="h-7 md:h-9 w-auto dark:hidden"
+      />
+      <img
+        src="/media/images/website-logo-dark-mode.jpg"
+        alt="Superteam Malaysia"
+        className="h-7 md:h-9 w-auto hidden dark:block"
+      />
     </Link>
   )
 
