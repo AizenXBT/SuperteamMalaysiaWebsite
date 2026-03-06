@@ -25,7 +25,7 @@ export function FAQSection({ initialData }: { initialData?: any[] }) {
           </h2>
           <p className="text-muted-foreground mt-4">
             {"Can't find the answer you're looking for? "}
-            <a href="#join" className="text-foreground underline underline-offset-4 hover:text-iris transition-colors" data-clickable>
+            <a href="https://t.me/hanstmy" target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-iris transition-colors" data-clickable>
               Get in touch
             </a>
             .

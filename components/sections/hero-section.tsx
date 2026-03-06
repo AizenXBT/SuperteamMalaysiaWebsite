@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, Menu } from "lucide-react"
+import { ArrowRight, Menu, ChevronUp } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { 
   Drawer, 
@@ -34,13 +34,18 @@ export function HeroSection({ members = [], memberCount = 500, eventCount = 50 }
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 100])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const showScrollButton = useTransform(scrollYProgress, [0.3, 0.5], [0, 1])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const Logo = () => (
     <a href="/" className="flex items-center" data-clickable>
       <img
         src="/media/images/website-logo-light-mode.jpg"
         alt="Superteam Malaysia"
-        className="h-8 md:h-10 w-auto dark:hidden"
+        className="h-8 md:h-10 w-auto dark:hidden rounded-md"
       />
       <img
         src="/media/images/website-logo-dark-mode.jpg"
@@ -276,6 +281,16 @@ export function HeroSection({ members = [], memberCount = 500, eventCount = 50 }
           <div className="w-1 h-2 rounded-full bg-foreground/50" />
         </motion.div>
       </motion.div>
+
+      {/* Scroll to top button */}
+      <motion.button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-2xl bg-background/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center text-foreground hover:text-iris hover:bg-background/60 transition-all"
+        style={{ opacity: showScrollButton, scale: showScrollButton }}
+        initial={{ opacity: 0, scale: 0 }}
+      >
+        <ChevronUp className="w-6 h-6" />
+      </motion.button>
     </section>
   )
 }
