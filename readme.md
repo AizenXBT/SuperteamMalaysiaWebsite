@@ -7,6 +7,8 @@ A dynamic community hub and CMS for the Superteam Malaysia ecosystem.
 ## Project Overview
 Superteam Malaysia is a high-performance community platform built to connect Malaysian Solana builders with opportunities, events, and grants. The platform features a real-time landing page, searchable member and product directories, and a robust Admin CMS for managing all site content dynamically.
 
+**Demo Video:** [Watch the demo](https://drive.google.com/file/d/1bVyH0ZZ-Fze7ncfoObDuWdinjOrPJdTL/view?usp=drivesdk)
+
 ## Tech Stack
 - **Framework:** Next.js (App Router)
 - **Styling:** Tailwind CSS
