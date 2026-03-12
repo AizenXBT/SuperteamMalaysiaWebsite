@@ -32,8 +32,8 @@ CLOUDINARY_UPLOAD_PRESET=superteam-malaysia
 ## Installation Steps
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/aizenxbt/SuperteamMalaysiaWebsite
+   cd SuperteamMalaysiaWebsite
    ```
 
 2. **Install dependencies:**
@@ -42,11 +42,11 @@ CLOUDINARY_UPLOAD_PRESET=superteam-malaysia
    ```
 
 3. **Database Setup:**
-   - Create a Supabase project.
+   - Create a Supabase project [here](https://supabase.com).
    - Execute the SQL provided in `supabase/schema.sql` within the Supabase SQL Editor to initialize all required tables and RLS policies.
 
 4. **Image Hosting Setup:**
-   - Configure a Cloudinary account.
+   - Configure a Cloudinary account [here](https://cloudinary.com).
    - Create an unsigned upload preset named `superteam-malaysia`.
 
 ## Local Development Guide
@@ -57,7 +57,12 @@ pnpm dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the site.
 
-- **Admin Access:** Navigate to `/admin` to access the CMS.
+- **Admin Access:** Navigate to `/admin` to access the CMS. Default credentials are:
+  ```bash
+  email=han@superteam.fun
+  password=12345678
+  ```
+
 - **Components:** UI components are located in `components/ui` (Radix UI + Tailwind).
 - **Sections:** Landing page sections are modularized in `components/sections`.
 
