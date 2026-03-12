@@ -1,44 +1,25 @@
-![Superteam Malaysia Banner](/public/media/images/banners/stmy-official-banner.jpg)
+![Superteam Malaysia Banner](/media/images/banners/stmy-official-banner.jpg)
 
-# Superteam Malaysia Website
+# Superteam Malaysia
 
-A dynamic community hub and CMS for Superteam Malaysia builders.
+A dynamic community hub and CMS for the Superteam Malaysia ecosystem.
 
-## Links
-- **Bounty:** [Superteam Malaysia — Website Design & Build Challenge](https://superteam.fun/earn/listing/superteam-malaysia-website-design-and-build-challenge)
-- **Submission:** [Notion Portfolio](https://www.notion.so/Website-Design-for-Superteam-Malaysia-30ba497b58e2808ab999f5a6d212eb22?source=copy_link)
-- **Design:** [Figma Mockup](https://www.figma.com/design/ewbKzYg1ACtTvT5rTToqwC/SuperteamMY-Website-Design?node-id=0-1&t=5BitKSxp74aisxC1-1)
+## Project Overview
+Superteam Malaysia is a high-performance community platform built to connect Malaysian Solana builders with opportunities, events, and grants. The platform features a real-time landing page, searchable member and product directories, and a robust Admin CMS for managing all site content dynamically.
 
 ## Tech Stack
-`Next.js` `Solana` `Supabase` `Tailwind CSS` `Cloudinary` `Framer Motion`
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS
+- **Database & Auth:** Supabase
+- **Image Hosting:** Cloudinary
+- **Animations:** Framer Motion
+- **Events:** Luma Integration
 
-## Core Features
-- **Dynamic Content:** Server-side rendered landing page where all stats, members, projects, and testimonials are fetched real-time from Supabase.
-- **Admin CMS:** Secure portal at `/admin` using a screen-based navigation system to manage every section of the site.
-- **Luma Integration:** Hybrid event section supporting both live Luma calendar embeds and featured manual events.
-- **Member Directory:** Searchable and filterable directory of Malaysian Solana builders with flip-card profiles.
-- **Product Showcase:** Directory of ecosystem products with direct links to X and live websites.
+## Environment Variables
+Create a `.env.local` file in the root directory with the following keys:
 
-## Setup Instructions
-
-### 1. Database (Supabase)
-- Create a new Supabase project.
-- Run the schema provided in `fe/supabase/schema.sql` in the SQL Editor to create tables for members, projects, events, partners, testimonials, and site settings.
-- Enable Row Level Security (RLS) and ensure public read access is active for all tables except `admin_profiles`.
-
-### 2. Image Hosting (Cloudinary)
-- Create a Cloudinary account.
-- Generate an unsigned upload preset named `superteam-malaysia`.
-- Add your Cloud Name, API Key, and API Secret to the environment variables.
-
-### 3. Luma Configuration
-- Obtain your Luma Calendar Embed URL from your Luma dashboard.
-- Log into the website admin portal and paste this URL into the **Website Content > Luma Live Feed** section to enable the live view.
-
-### 4. Environment Variables
-Create a `.env.local` file in the `fe` directory with the following:
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
@@ -46,9 +27,51 @@ CLOUDINARY_API_SECRET=your_api_secret
 CLOUDINARY_UPLOAD_PRESET=superteam-malaysia
 ```
 
-### 5. Installation
+## Installation Steps
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd <project-directory>
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+3. **Database Setup:**
+   - Create a Supabase project.
+   - Execute the SQL provided in `supabase/schema.sql` within the Supabase SQL Editor to initialize all required tables and RLS policies.
+
+4. **Image Hosting Setup:**
+   - Configure a Cloudinary account.
+   - Create an unsigned upload preset named `superteam-malaysia`.
+
+## Local Development Guide
+To start the development server locally:
+
 ```bash
-pnpm install
-pnpm build
-pnpm start
+pnpm dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the site.
+
+- **Admin Access:** Navigate to `/admin` to access the CMS.
+- **Components:** UI components are located in `components/ui` (Radix UI + Tailwind).
+- **Sections:** Landing page sections are modularized in `components/sections`.
+
+## Deployment Instructions
+This project is optimized for deployment on **Vercel**.
+
+1. Connect your GitHub repository to Vercel.
+2. Add all environment variables listed above to the Vercel project settings.
+3. Use the following build settings:
+   - **Framework Preset:** Next.js
+   - **Build Command:** `pnpm build`
+   - **Install Command:** `pnpm install`
+4. Deploy.
+
+---
+**Submission Links:**
+- **Bounty:** [🇲🇾 Superteam Malaysia — Website Design & Build Challenge](https://superteam.fun/earn/listing/superteam-malaysia-website-design-and-build-challenge)
+- **Design:** [Figma Mockup](https://www.figma.com/design/ewbKzYg1ACtTvT5rTToqwC/SuperteamMY-Website-Design?node-id=0-1&t=5BitKSxp74aisxC1-1)
+- **Portfolio:** [Notion Submission](https://www.notion.so/Website-Design-for-Superteam-Malaysia-30ba497b58e2808ab999f5a6d212eb22?source=copy_link)
