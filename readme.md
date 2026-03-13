@@ -1,4 +1,4 @@
-![Superteam Malaysia Banner](/media/images/banners/stmy-official-banner.jpg)
+![Superteam Malaysia Banner](/public/media/images/banners/stmy-official-banner.jpg)
 
 # Superteam Malaysia
 
